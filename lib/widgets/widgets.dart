@@ -1,1 +1,1 @@
-library geoff.widgets
+library geoff.widgets;

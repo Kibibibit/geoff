@@ -1,4 +1,5 @@
 library geoff;
 
-export "models.dart";
-export "widgets.dart";
+export "./utils/utils.dart";
+export "./models/models.dart";
+export "./widgets/widgets.dart";
