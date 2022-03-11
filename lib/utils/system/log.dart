@@ -26,35 +26,21 @@ class Log {
   String get name {return _name;}  
 
 
+  /// Calls log at the given [Level]
   void log(Level level, String message, [dynamic error, StackTrace? stackTrace]) {
     message = "[$_name] ${message.toString()}";
 
-    void Function(String, [dynamic, StackTrace?])? function;
+    Map<Level, Function(String, [dynamic, StackTrace?])?> _functionMap = {
+      Level.verbose : _logger.v,
+      Level.debug : _logger.d,
+      Level.info : _logger.i,
+      Level.warning : _logger.w,
+      Level.error : _logger.e,
+      Level.wtf : _logger.wtf,
+      Level.nothing : null
+    };
 
-    switch (level) {
-      
-      case Level.verbose:
-        function = _logger.v;
-        break;
-      case Level.debug:
-        function = _logger.d;
-        break;
-      case Level.info:
-        function = _logger.i;
-        break;
-      case Level.warning:
-        function = _logger.w;
-        break;
-      case Level.error:
-        function = _logger.e;
-        break;
-      case Level.wtf:
-        function = _logger.wtf;
-        break;
-      case Level.nothing:
-        function = null;
-        break;
-    }
+    void Function(String, [dynamic, StackTrace?])? function = _functionMap[level];
 
     if (function != null) {
       if (error != null) {
@@ -63,8 +49,6 @@ class Log {
         function(message);
       }
     }
-
-
   }
 
   void verbose(dynamic message, [dynamic error, StackTrace? stackTrace]) {

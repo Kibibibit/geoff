@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:geoff/utils/networking/status_code.dart';
 import 'package:geoff/utils/system/log.dart';
 import 'package:http/http.dart' as http;
 
-
+/// Basic Rest Client
+/// Authors - Dan M
 class MayRest {
 
   static final Log _logger = Log("MayRest");
@@ -11,6 +13,9 @@ class MayRest {
 
   /// The token of the currently logged in user
   static String? userToken;
+
+
+  static const Map<String,String> defaultHeaders = {'Content-Type': 'application/json','Accept': 'application/json'};
 
   /// Adds headers, plus [userToken] onto an api call
   static Map<String, String> _addAuth(Map<String, String> headers, [bool noToken = false]) {
@@ -21,13 +26,15 @@ class MayRest {
 
     if (userToken != null && !noToken) {
       newHeaders["Authorization"] = "Bearer $userToken";
+    } else if (!noToken && userToken == null) {
+      _logger.warning("noToken is true but no token is set! make sure to set userToken!");
     }
 
     return newHeaders;
 
   }
 
-  static String _responseOutput(http.Response r) => "Request: ${r.request} returned Status Code: ${r.statusCode}.\nHeaders: ${r.headers}\nBody: ${r.body}";
+  static String _responseOutput(http.Response r) => "Request: ${r.request} returned Status Code: ${r.statusCode} (${StatusCode.codeValue(r.statusCode)}).\nHeaders: ${r.headers}\nBody: ${r.body}";
 
 
   static Future<http.Response> get(
@@ -35,7 +42,7 @@ class MayRest {
     {
       bool quiet = false, 
       bool noToken = false, 
-      Map<String, String> headers =  const {'Content-Type': 'application/json','Accept': 'application/json'}
+      Map<String, String> headers = defaultHeaders
     }
   ) {
 
@@ -53,7 +60,7 @@ class MayRest {
     {
       bool quiet = false, 
       bool noToken = false, 
-      Map<String, String> headers = const {'Content-Type': 'application/json','Accept': 'application/json'}
+      Map<String, String> headers = defaultHeaders
     }
   ) {
     
