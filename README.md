@@ -13,7 +13,7 @@ Contains a GRPC client, RESTful api helpers, and a status code mapping
 #### **System**
 Contains an extension of the dart logger, and some system info utils
 
-### **Widgets**
+#### **Widgets**
 Currently empty, will contain some common widgets we use
 
 ## **Changelog**
