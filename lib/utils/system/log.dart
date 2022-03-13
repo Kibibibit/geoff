@@ -75,7 +75,7 @@ class Log {
   void logAt(Level level, dynamic message, [Error? error, StackTrace? stackTrace]) {
 
     if (level != Level.nothing) {
-      String levelString = "[${_colorise(level.toString().toUpperCase(), _logColor[level]!)}]";
+      String levelString = "[${_colorise(level.name.toUpperCase(), _logColor[level]!)}]";
       String classString = "[${_colorise(_name, _classColors[_col])}]";
       String logStart = levelString + classString;
       String out = logStart + message.toString();

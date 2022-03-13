@@ -21,6 +21,9 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.4-fix**
+- Added a slight fix to the formatting in the logger
+
 #### **0.1.4-docs**
 - Added documentation and some slight refactoring
 
