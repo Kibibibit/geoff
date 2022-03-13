@@ -21,6 +21,9 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.5-fix-3**
+- Export fixes
+  
 #### **0.1.5-fix-2**
 - Added scopes into app auth
 
