@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:geoff/utils/networking/status_code.dart';
-import 'package:geoff/utils/system/level.dart';
 import 'package:geoff/utils/system/log.dart';
 import 'package:http/http.dart' as http;
 

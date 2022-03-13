@@ -7,6 +7,7 @@ class SystemInfo {
 
   static late final Platform? _platform;
 
+  /// Gets the current [Platform] that the system is running on
   static Platform getPlatform() {
     if (_platform == null) {
       try {

@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:geoff/utils/maths/random_utils.dart';
-import 'package:geoff/utils/system/level.dart';
 
 
 /// An extension of the dart logger, but includes class names
@@ -9,6 +8,7 @@ class Log {
 
   
 
+  /// Escape codes for logging in color
   //static const String _black = "\x1B[30m";
   static const String _red = "\x1B[31m";
   static const String _green = "\x1B[32m";
@@ -33,10 +33,11 @@ class Log {
 
 
   final String _name;
-  final Level _level;
   final int _col;
+  Level _level;
   bool _colors;
 
+  /// Creates a new logger
   Log(
     String name,
     {
@@ -57,6 +58,10 @@ class Log {
     _colors = colors;
   }
 
+  void setLevel(Level level) {
+    _level = level;
+  }
+
 
   String _colorise(String text, String color) {
     if (_colors) {
@@ -65,6 +70,8 @@ class Log {
     return text;
   }
 
+
+  /// Calls log at the given [Level]
   void logAt(Level level, dynamic message, [Error? error, StackTrace? stackTrace]) {
 
     if (level != Level.nothing) {
@@ -83,34 +90,52 @@ class Log {
 
   }
 
-  /// Calls log at the given [Level]
+  /// Calls [logAt] but at the currently set [Level] through [setLevel]
   void log(dynamic message, [Error? error, StackTrace? stackTrace]) {
     logAt(_level, message, error, stackTrace);
   }
 
-
+  /// Logs at [Level.debug]
   void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.debug, message, error, stackTrace);
   }
 
+  /// Logs at [Level.info]
   void info(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.info, message, error, stackTrace);
   }
 
+  /// Logs at [Level.warning]
   void warning(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.warning, message, error, stackTrace);
   }
 
+  /// Logs at [Level.error]
   void error(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.error, message, error, stackTrace);
   }
 
+  /// Logs at [Level.wtf]
   void wtf(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.wtf, message, error, stackTrace);
   }
 
   
+}
 
 
-
+/// The level that the logger can log at
+enum Level {
+  /// Info - For logging simple info messages
+  info,
+  /// Warning - for non critical errors
+  warning,
+  /// Debug - For debugging information
+  debug,
+  /// Error - For critical errors
+  error,
+  /// WTF - WTF
+  wtf,
+  /// Disables logging completely
+  nothing
 }
