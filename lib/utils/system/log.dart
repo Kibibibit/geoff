@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:geoff/utils/maths/random_utils.dart';
+import 'package:geoff/utils/system/system_info.dart';
 
 
 /// An extension of the dart logger, but includes class names
@@ -74,7 +75,7 @@ class Log {
   /// Calls log at the given [Level]
   void logAt(Level level, dynamic message, [Error? error, StackTrace? stackTrace]) {
 
-    if (level != Level.nothing) {
+    if (level != Level.nothing || (level == Level.debug && !SystemInfo.debugMode)) {
       String levelString = "[${_colorise(level.name.toUpperCase(), _logColor[level]!)}]";
       String classString = "[${_colorise(_name, _classColors[_col])}]";
       String logStart = levelString + classString;
@@ -95,7 +96,7 @@ class Log {
     logAt(_level, message, error, stackTrace);
   }
 
-  /// Logs at [Level.debug]
+  /// Logs at [Level.debug], assuming the system is in debug mode
   void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     logAt(Level.debug, message, error, stackTrace);
   }

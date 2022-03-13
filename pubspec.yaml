@@ -9,8 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_appauth: ^2.4.1
   grpc: ^3.0.2
   http: ^0.13.4
+  jaguar_jwt: ^3.0.0
 
 
 dev_dependencies:
