@@ -19,7 +19,7 @@ class Session {
   static Map<String, dynamic>  tokenData = {};
 
 
-  bool onToken(AuthorizationTokenResponse response) {
+  static bool onToken(AuthorizationTokenResponse response) {
 
     if (response.accessToken != null) {
       _logger.info("Got a token!");

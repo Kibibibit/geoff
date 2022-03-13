@@ -21,6 +21,9 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.5-fix**
+- Made Session.onLogin static
+
 #### **0.1.5**
 - Started adding app auth stuff
 
