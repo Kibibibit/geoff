@@ -10,6 +10,12 @@ import 'package:http/http.dart' as http;
 class MayRest {
   static final Log _logger = Log("MayRest");
 
+
+  /// Allows you to disable colors for this logger
+  static void disableColors() {
+    _logger.setColors(false);
+  }
+
   /// The token of the currently logged in user
   static String? userToken;
 

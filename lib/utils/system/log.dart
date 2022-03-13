@@ -35,24 +35,42 @@ class Log {
   final String _name;
   final Level _level;
   final int _col;
+  bool _colors;
 
   Log(
     String name,
-    {Level level = Level.info,
+    {
+      Level level = Level.info,
+      bool colors = true,
   }) : _name = name,
     _col = RandomUtils.intInRange(0, _classColors.length),
+    _colors = colors,
     _level = level;
 
 
 
   String get name {return _name;}
   Level get level {return _level;}
+  bool get colors {return _colors;}
 
+  void setColors(bool colors) {
+    _colors = colors;
+  }
+
+
+  String _colorise(String text, String color) {
+    if (_colors) {
+      text = color+text+_reset;
+    }
+    return text;
+  }
 
   void logAt(Level level, dynamic message, [Error? error, StackTrace? stackTrace]) {
 
     if (level != Level.nothing) {
-      String logStart = "[${_logColor[level]}${level.toString().toUpperCase()}$_reset][${_classColors[_col]}$name$_reset]";
+      String levelString = "[${_colorise(level.toString().toUpperCase(), _logColor[level]!)}]";
+      String classString = "[${_colorise(_name, _classColors[_col])}]";
+      String logStart = levelString + classString;
       String out = logStart + message.toString();
 
       debugPrint(out);
