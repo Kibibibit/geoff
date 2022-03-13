@@ -16,6 +16,7 @@ class AppAuthHelper {
   static String? _clientId;
   static String? _realm;
   static String? _authServerUrl;
+  static List<String>? _scopes;
 
   static void setRedirectUrl(String redirectUrl) {
     _redirectUrl = redirectUrl;
@@ -31,6 +32,10 @@ class AppAuthHelper {
 
   static void setAuthServerUrl(String authServerUrl) {
     _authServerUrl = authServerUrl;
+  }
+
+  static void setScopes(List<String> scopes) {
+    _scopes = scopes;
   }
 
   static Future<AuthorizationTokenResponse?> login({String? redirectUrl, String? clientId, String? realm, String? authServerUrl}) async {
@@ -68,7 +73,8 @@ class AppAuthHelper {
       AuthorizationTokenRequest(
         clientId, 
         redirectUrl,
-        discoveryUrl: discoveryurl
+        discoveryUrl: discoveryurl,
+        scopes: _scopes
       )
     );
 
