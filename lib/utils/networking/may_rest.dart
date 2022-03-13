@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:geoff/utils/networking/status_code.dart';
+import 'package:geoff/utils/system/level.dart';
 import 'package:geoff/utils/system/log.dart';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 /// Basic Rest Client
 /// Authors - Dan M
@@ -51,7 +51,7 @@ class MayRest {
       level = Level.wtf;
     }
 
-    _logger.log(level,
+    _logger.logAt(level,
         "Request: ${r.request} returned Status Code: ${r.statusCode} (${StatusCode.codeValue(r.statusCode)}).\nHeaders: ${r.headers}\nBody: ${r.body}");
   }
 

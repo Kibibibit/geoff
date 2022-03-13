@@ -8,6 +8,8 @@ Currently nothing in here, will contain abstract data models
 
 ### **Utils**
 Contains utility functions for all sorts of Networking, System and Maths tools
+#### **Maths**
+Contains a random utils for now. Will add more
 #### **Networking**
 Contains a GRPC client, RESTful api helpers, and a status code mapping
 #### **System**
@@ -19,6 +21,10 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.3**
+- Added a random utils
+- Rewrote the logger to not be so giant
+
 #### **0.1.2-fix**
 - Fixed system info not being exported
 

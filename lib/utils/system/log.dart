@@ -1,78 +1,94 @@
 
-import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
+import 'package:geoff/utils/maths/random_utils.dart';
+import 'package:geoff/utils/system/level.dart';
 
 
 /// An extension of the dart logger, but includes class names
 class Log {
 
+  
+
+  //static const String _black = "\x1B[30m";
+  static const String _red = "\x1B[31m";
+  static const String _green = "\x1B[32m";
+  static const String _yellow = "\x1B[33m";
+  static const String _blue = "\x1B[34m";
+  static const String _magenta = "\x1B[35m";
+  static const String _cyan = "\x1B[36m";
+  static const String _white = "\x1B[37m";
+  static const String _reset = "\x1B[0m";
+
+  static final Map<Level, String> _logColor = {
+    Level.info:_cyan,
+    Level.debug:_green,
+    Level.warning:_yellow,
+    Level.error:_red,
+    Level.wtf:_magenta
+  };
+
+  static final List<String> _classColors = [
+    _green,_yellow,_blue,_magenta,_cyan,_white
+  ];
+
+
   final String _name;
-  final Logger _logger;
+  final Level _level;
+  final int _col;
 
   Log(
     String name,
-    {LogFilter? filter,
-    LogPrinter? printer,
-    LogOutput? output,
-    Level? level,
+    {Level level = Level.info,
   }) : _name = name,
-    _logger = Logger(
-      filter: filter, 
-      printer: printer, 
-      output: output, 
-      level: level
-    );
+    _col = RandomUtils.intInRange(0, _classColors.length),
+    _level = level;
 
 
-  String get name {return _name;}  
+
+  String get name {return _name;}
+  Level get level {return _level;}
 
 
-  /// Calls log at the given [Level]
-  void log(Level level, String message, [dynamic error, StackTrace? stackTrace]) {
-    message = "[$_name] ${message.toString()}";
+  void logAt(Level level, dynamic message, [Error? error, StackTrace? stackTrace]) {
 
-    Map<Level, Function(String, [dynamic, StackTrace?])?> _functionMap = {
-      Level.verbose : _logger.v,
-      Level.debug : _logger.d,
-      Level.info : _logger.i,
-      Level.warning : _logger.w,
-      Level.error : _logger.e,
-      Level.wtf : _logger.wtf,
-      Level.nothing : null
-    };
+    if (level != Level.nothing) {
+      String logStart = "[${_logColor[level]}${level.toString().toUpperCase()}$_reset][${_classColors[_col]}$name$_reset]";
+      String out = logStart + message.toString();
 
-    void Function(String, [dynamic, StackTrace?])? function = _functionMap[level];
-
-    if (function != null) {
+      debugPrint(out);
       if (error != null) {
-        function(message, error, stackTrace);
-      } else {
-        function(message);
+        stackTrace ??= error.stackTrace;
+        debugPrintStack(label: error.toString(), stackTrace: stackTrace);
       }
     }
+
+
   }
 
-  void verbose(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.verbose, message, error, stackTrace);
+  /// Calls log at the given [Level]
+  void log(dynamic message, [Error? error, StackTrace? stackTrace]) {
+    logAt(_level, message, error, stackTrace);
   }
+
 
   void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.debug, message, error, stackTrace);
+    logAt(Level.debug, message, error, stackTrace);
   }
 
   void info(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.info, message, error, stackTrace);
+    logAt(Level.info, message, error, stackTrace);
   }
 
   void warning(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.warning, message, error, stackTrace);
+    logAt(Level.warning, message, error, stackTrace);
   }
 
   void error(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.error, message, error, stackTrace);
+    logAt(Level.error, message, error, stackTrace);
   }
 
   void wtf(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    log(Level.wtf, message, error, stackTrace);
+    logAt(Level.wtf, message, error, stackTrace);
   }
 
   
