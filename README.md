@@ -21,6 +21,9 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.6**
+- Added number utils
+
 #### **0.1.5-fix-3**
 - Export fixes
   
