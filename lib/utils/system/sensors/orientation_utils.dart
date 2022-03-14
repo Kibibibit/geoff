@@ -10,13 +10,13 @@ class DeviceOrientation {
     _logger.setColors(false);
   }
 
-  static Orientation _orientation = Orientation.unknown;
+  static EOrientation _orientation = EOrientation.unknown;
 
   /// Get the current orientation of the device. If initOrientation has not been called this will be unknown
-  static Orientation get orientation {return _orientation;}
+  static EOrientation get orientation {return _orientation;}
 
   /// Callback called when the orientation change 
-  static void Function(Orientation orientation) onOrientationChange = ((orientation) {});
+  static void Function(EOrientation orientation) onOrientationChange = ((orientation) {});
 
 
   /// Call this in an initState near the start of your app
@@ -25,24 +25,24 @@ class DeviceOrientation {
     NativeDeviceOrientationCommunicator communicator = NativeDeviceOrientationCommunicator();
     communicator.onOrientationChanged(useSensor: useSensor).listen((NativeDeviceOrientation nativeOrientation) {
 
-      late Orientation orientation;
+      late EOrientation orientation;
 
       switch (nativeOrientation) {
         
         case NativeDeviceOrientation.portraitUp:
-          orientation = Orientation.potraitUp;
+          orientation = EOrientation.potraitUp;
           break;
         case NativeDeviceOrientation.portraitDown:
-          orientation = Orientation.potraitDown;
+          orientation = EOrientation.potraitDown;
           break;
         case NativeDeviceOrientation.landscapeLeft:
-          orientation = Orientation.landscapeLeft;
+          orientation = EOrientation.landscapeLeft;
           break;
         case NativeDeviceOrientation.landscapeRight:
-          orientation = Orientation.landscapeRight;
+          orientation = EOrientation.landscapeRight;
           break;
         case NativeDeviceOrientation.unknown:
-          orientation = Orientation.unknown;
+          orientation = EOrientation.unknown;
           break;
       }
       _orientation = orientation;
@@ -55,7 +55,7 @@ class DeviceOrientation {
 
 }
 
-enum Orientation {
+enum EOrientation {
   potraitUp,
   potraitDown,
   landscapeLeft,
