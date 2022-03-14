@@ -47,8 +47,6 @@ class DeviceOrientation {
       }
       _orientation = orientation;
       onOrientationChange(orientation);
-
-      _logger.debug(orientation);
     });
 
   }
