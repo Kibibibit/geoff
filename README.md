@@ -21,6 +21,9 @@ Currently empty, will contain some common widgets we use
 ## **Changelog**
 
 ### **Version 0.1**
+#### **0.1.7**
+- Added Orientationutils, allowing checking and running callbacks on device orientation changes
+
 #### **0.1.6**
 - Added number utils
 
