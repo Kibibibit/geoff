@@ -30,10 +30,10 @@ class DeviceOrientation {
       switch (nativeOrientation) {
         
         case NativeDeviceOrientation.portraitUp:
-          orientation = EOrientation.potraitUp;
+          orientation = EOrientation.portraitUp;
           break;
         case NativeDeviceOrientation.portraitDown:
-          orientation = EOrientation.potraitDown;
+          orientation = EOrientation.portraitDown;
           break;
         case NativeDeviceOrientation.landscapeLeft:
           orientation = EOrientation.landscapeLeft;
@@ -54,8 +54,8 @@ class DeviceOrientation {
 }
 
 enum EOrientation {
-  potraitUp,
-  potraitDown,
+  portraitUp,
+  portraitDown,
   landscapeLeft,
   landscapeRight,
   unknown
