@@ -220,13 +220,14 @@ class _LogConsole extends StatefulWidget {
 }
 
 class _LogConsoleState extends State<_LogConsole> {
-  List<_LogModel> logs = Log._logs;
+  List<_LogModel> logs = [];
 
   StreamSubscription? subscription;
 
   @override
   void initState() {
     setState(() {
+      logs = Log._logs;
       subscription = Log._updateStream.stream.listen((event) {
         setState(() {
           logs = Log._logs;
