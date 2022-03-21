@@ -23,6 +23,9 @@ Currently empty, will contain some common widgets we use
 # **Changelog**
 
 ## **Version 0.1**
+### **0.1.8-fix**
+- Fixed listview in logger expecting infinite items
+
 ### **0.1.8**
 - Adding a logger console that can be popped up. Unstable currently.
 

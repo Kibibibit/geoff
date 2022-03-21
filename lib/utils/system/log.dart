@@ -20,7 +20,7 @@ class Log {
 
   static int _maxLogs = 100;
 
-  static double _iconSize = 15.0;
+  static double _iconSize = 24.0;
 
   static final List<_LogModel> _logs = [];
 
@@ -235,6 +235,7 @@ class _LogConsoleState extends State<_LogConsole> {
         children: [
           Expanded(
             child: ListView.builder(
+              itemCount: logs.length,
               itemBuilder: (context, index) {
                 return _LogWidget(model: logs[index]);
               },
