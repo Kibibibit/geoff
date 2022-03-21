@@ -28,11 +28,7 @@ class Log {
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
-  static final StreamController _updateStream =
-      StreamController.broadcast(onListen: () {
-    Timer(
-        const Duration(milliseconds: 100), (() => _updateStream.add("Update!")));
-  });
+  static final StreamController _updateStream = StreamController.broadcast();
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
@@ -244,14 +240,17 @@ class _LogConsoleState extends State<_LogConsole> {
           logs = Log._logs;
         });
       });
-
-      listView = ListView.builder(
-        itemCount: logs.length,
-        itemBuilder: (context, index) {
-          return _LogWidget(model: logs[index]);
-        },
-      );
     });
+    Timer(
+        const Duration(milliseconds: 100),
+        (() => setState(() {
+              listView = ListView.builder(
+                itemCount: logs.length,
+                itemBuilder: (context, index) {
+                  return _LogWidget(model: logs[index]);
+                },
+              );
+            })));
   }
 
   @override
