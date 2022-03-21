@@ -270,7 +270,7 @@ class _LogConsoleState extends State<_LogConsole> {
       body: Column(
         children: [
           Expanded(
-            child: listView ?? Container(color: Colors.red,),
+            child: listView ?? Container(color: Colors.red, child: const Text("I'm Loading!"),),
           ),
         ],
       ),
