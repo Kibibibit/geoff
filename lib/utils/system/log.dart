@@ -225,22 +225,23 @@ class _LogConsoleState extends State<_LogConsole> {
 
   @override
   void initState() {
+    super.initState();
     setState(() {
       subscription = Log._updateStream.stream.listen((event) {
         //Blank setstate to reload
-        setState(() {});
+        //setState(() {});
       });
     });
 
-    super.initState();
+    
   }
 
   @override
   void dispose() {
+    super.dispose();
     if (subscription != null) {
       subscription!.cancel();
     }
-    super.dispose();
   }
 
   @override
