@@ -241,16 +241,6 @@ class _LogConsoleState extends State<_LogConsole> {
         });
       });
     });
-    Timer(
-        const Duration(milliseconds: 100),
-        (() => setState(() {
-              listView = ListView.builder(
-                itemCount: logs.length,
-                itemBuilder: (context, index) {
-                  return _LogWidget(model: logs[index]);
-                },
-              );
-            })));
   }
 
   @override
@@ -270,7 +260,12 @@ class _LogConsoleState extends State<_LogConsole> {
       body: Column(
         children: [
           Expanded(
-            child: listView ?? Container(color: Colors.red, child: const Text("I'm Loading!"),),
+            child: ListView.builder(
+              itemCount: logs.length,
+              itemBuilder: (context, index) {
+                return _LogWidget(model: logs[index]);
+              },
+            ),
           ),
         ],
       ),
