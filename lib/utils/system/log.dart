@@ -327,7 +327,7 @@ class _LogWidget extends StatelessWidget {
           ),
           Text(
             "[${model.caller}]",
-            style: TextStyle(color: _textColorMap[model.callerColour]),
+            style: TextStyle(fontWeight: FontWeight.bold,color: _textColorMap[model.callerColour]),
           )
         ],
       ),
