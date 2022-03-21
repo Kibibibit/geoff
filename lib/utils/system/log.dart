@@ -220,18 +220,15 @@ class _LogConsole extends StatefulWidget {
 }
 
 class _LogConsoleState extends State<_LogConsole> {
-  List<_LogModel> logs = [];
 
   StreamSubscription? subscription;
 
   @override
   void initState() {
     setState(() {
-      logs = Log._logs;
       subscription = Log._updateStream.stream.listen((event) {
-        setState(() {
-          logs = Log._logs;
-        });
+        //Blank setstate to reload
+        setState(() {});
       });
     });
 
@@ -264,9 +261,9 @@ class _LogConsoleState extends State<_LogConsole> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: logs.length,
+              itemCount: Log._logs.length,
               itemBuilder: (context, index) {
-                return _LogWidget(model: logs[index]);
+                return _LogWidget(model: Log._logs[index]);
               },
             ),
           ),
