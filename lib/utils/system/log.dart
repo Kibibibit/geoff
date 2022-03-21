@@ -24,7 +24,8 @@ class Log {
 
   static bool _logInDebugMode = false;
 
-  static final List<_LogModel> _logs = [];
+  // ignore: prefer_final_fields
+  static List<_LogModel> _logs = [];
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
@@ -226,12 +227,12 @@ class _LogConsoleState extends State<_LogConsole> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      subscription = Log._updateStream.stream.listen((event) {
-        //Blank setstate to reload
-        //setState(() {});
-      });
-    });
+    // setState(() {
+    //   subscription = Log._updateStream.stream.listen((event) {
+    //     //Blank setstate to reload
+    //     //setState(() {});
+    //   });
+    // });
 
     
   }
