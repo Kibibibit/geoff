@@ -23,6 +23,9 @@ Currently empty, will contain some common widgets we use
 # **Changelog**
 
 ## **Version 0.1**
+### **0.1.8-fix-6**
+- Logger subscription now cancels on pop, just to ease the amount of listeners
+
 ### **0.1.8-fix-5**
 - Logger now shows all previous logs without needing a new one to update it - Actually this time
 

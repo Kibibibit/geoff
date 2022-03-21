@@ -252,6 +252,9 @@ class _LogConsoleState extends State<_LogConsole> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
+              if (subscription != null) {
+                subscription!.cancel();
+              }
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.close)),
