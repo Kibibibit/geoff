@@ -40,7 +40,7 @@ class Log {
 
   static void showLogger(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const _LogConsole();
+      return _LogConsole(logs: _logs,);
     }));
   }
 
@@ -213,7 +213,9 @@ enum Level {
 }
 
 class _LogConsole extends StatefulWidget {
-  const _LogConsole({Key? key}) : super(key: key);
+  const _LogConsole({Key? key, required this.logs}) : super(key: key);
+
+  final List<_LogModel> logs;
 
   @override
   State<_LogConsole> createState() => _LogConsoleState();
@@ -221,25 +223,22 @@ class _LogConsole extends StatefulWidget {
 
 class _LogConsoleState extends State<_LogConsole> {
   StreamSubscription? subscription;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   setState(() {
-  //     subscription = Log._updateStream.stream.listen((event) {
-  //       //Blank setstate to reload
-  //       //setState(() {});
-  //     });
-  //   });
-  // }
+  late List<_LogModel> logs;
 
   @override
-  void dispose() {
-    super.dispose();
-    if (subscription != null) {
-      subscription!.cancel();
-    }
+  void initState() {
+    super.initState();
+    setState(() {
+      logs = widget.logs;
+      subscription = Log._updateStream.stream.listen((event) {
+        setState(() {
+          logs = Log._logs;
+        });
+      });
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -261,9 +260,9 @@ class _LogConsoleState extends State<_LogConsole> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: Log._logs.length,
+              itemCount: logs.length,
               itemBuilder: (context, index) {
-                return _LogWidget(model: Log._logs[index]);
+                return _LogWidget(model: logs[index]);
               },
             ),
           ),
