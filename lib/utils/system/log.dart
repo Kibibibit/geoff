@@ -283,7 +283,7 @@ class _LogWidget extends StatelessWidget {
 
   static final Map<Level, Color> _colorMap = {
     Level.info: Colors.blue,
-    Level.warning: Colors.amber,
+    Level.warning: Colors.orange,
     Level.error: Colors.red,
     Level.debug: Colors.green,
     Level.wtf: Colors.purple
@@ -291,8 +291,8 @@ class _LogWidget extends StatelessWidget {
 
   static final Map<String, Color> _textColorMap = {
     Log._green: Colors.green,
-    Log._yellow: Colors.amber,
-    Log._blue: Colors.yellow,
+    Log._yellow: Colors.orange,
+    Log._blue: Colors.blue,
     Log._magenta: Colors.purple,
     Log._cyan: Colors.cyan,
     Log._white: Colors.black
@@ -317,13 +317,13 @@ class _LogWidget extends StatelessWidget {
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
       ),
-      leading: Row(
+      leading: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
             child: icon,
-            padding: const EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(bottom: 5),
           ),
           Text(
             "[${model.caller}]",

@@ -22,6 +22,9 @@ Currently empty, will contain some common widgets we use
 
 # **Changelog**
 ## **Version 0.1**
+### **0.1.9-fix-2**
+- Some colouring and styling changes
+
 ### **0.1.9-fix-1**
 - Added bold to log console output label, also updated version to help with version stuff
 
