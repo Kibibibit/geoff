@@ -28,7 +28,7 @@ class Log {
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
-  static final StreamController _updateStream = StreamController.broadcast();
+  static final StreamController _updateStream = StreamController.broadcast(onListen: () => _updateStream.add("Update!"));
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
