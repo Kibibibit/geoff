@@ -23,6 +23,9 @@ Currently empty, will contain some common widgets we use
 # **Changelog**
 
 ## **Version 0.1**
+### **0.1.8-fix-2**
+- Cancelled stream subscription after logger closes
+
 ### **0.1.8-fix**
 - Fixed listview in logger expecting infinite items
 

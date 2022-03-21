@@ -212,23 +212,38 @@ class _LogConsole extends StatefulWidget {
 class _LogConsoleState extends State<_LogConsole> {
   List<_LogModel> logs = [];
 
+  StreamSubscription? subscription;
+
   @override
   void initState() {
-    Log._updateStream.stream.listen((event) {
-      setState(() {
-        logs = Log._logs;
+    setState(() {
+      subscription = Log._updateStream.stream.listen((event) {
+        setState(() {
+          logs = Log._logs;
+        });
       });
     });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (subscription != null) {
+      subscription!.cancel();
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () {
-          Navigator.of(context).pop();
-        }, icon: const Icon(Icons.close)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.close)),
         title: const Text("Logs"),
       ),
       body: Column(
@@ -268,14 +283,21 @@ class _LogWidget extends StatelessWidget {
   final Icon icon;
 
   _LogWidget({Key? key, required this.model})
-      : icon = Icon(_iconMap[model.level], color: _colorMap[model.level], size: Log._iconSize,),
+      : icon = Icon(
+          _iconMap[model.level],
+          color: _colorMap[model.level],
+          size: Log._iconSize,
+        ),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text("[${model.caller}] ${model.message}"),
-      subtitle: Text(model.error?.toString() ?? "", style: const TextStyle(color: Colors.red),),
+      subtitle: Text(
+        model.error?.toString() ?? "",
+        style: const TextStyle(color: Colors.red),
+      ),
       leading: icon,
     );
   }
