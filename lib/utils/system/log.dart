@@ -22,6 +22,8 @@ class Log {
 
   static double _iconSize = 24.0;
 
+  static bool _logInDebugMode = false;
+
   static final List<_LogModel> _logs = [];
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
@@ -94,6 +96,14 @@ class Log {
     return _iconSize;
   }
 
+  bool get logInDebugMode {
+    return _logInDebugMode;
+  }
+
+  void setLogInDebugMode(bool log) {
+    _logInDebugMode = log;
+  }
+
   void setMaxLogs(int maxLogs) {
     if (maxLogs >= 0) {
       _maxLogs = maxLogs;
@@ -122,7 +132,7 @@ class Log {
   /// Calls log at the given [Level]
   void logAt(Level level, dynamic message,
       [Error? error, StackTrace? stackTrace]) {
-    if (level != Level.nothing || SystemInfo.debugMode) {
+    if (level != Level.nothing && (SystemInfo.debugMode || _logInDebugMode)) {
       String formattedMessage = _encoder.convert(message.toString());
       String levelString =
           "[${_colorise(level.name.toUpperCase(), _logColor[level]!)}]";
@@ -210,7 +220,7 @@ class _LogConsole extends StatefulWidget {
 }
 
 class _LogConsoleState extends State<_LogConsole> {
-  List<_LogModel> logs = [];
+  List<_LogModel> logs = Log._logs;
 
   StreamSubscription? subscription;
 

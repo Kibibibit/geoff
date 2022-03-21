@@ -23,6 +23,10 @@ Currently empty, will contain some common widgets we use
 # **Changelog**
 
 ## **Version 0.1**
+### **0.1.8-fix-4**
+- Logger now shows all previous logs without needing a new one to update it
+- Added the ability to allow logs in production versions of the app through a flag
+
 ### **0.1.8-fix-3**
 - Changed logger stream to a broadcast to allow multiple listeners
 
