@@ -23,6 +23,9 @@ Currently empty, will contain some common widgets we use
 # **Changelog**
 
 ## **Version 0.1**
+### **0.1.8-fix-3**
+- Changed logger stream to a broadcast to allow multiple listeners
+
 ### **0.1.8-fix-2**
 - Cancelled stream subscription after logger closes
 
