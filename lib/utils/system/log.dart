@@ -40,7 +40,9 @@ class Log {
 
   static void showLogger(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return _LogConsole(logs: _logs,);
+      return _LogConsole(
+        logs: _logs,
+      );
     }));
   }
 
@@ -225,11 +227,21 @@ class _LogConsoleState extends State<_LogConsole> {
   StreamSubscription? subscription;
   late List<_LogModel> logs;
 
+  Widget? listView;
+
   @override
   void initState() {
     super.initState();
     setState(() {
       logs = widget.logs;
+
+      listView = ListView.builder(
+        itemCount: logs.length,
+        itemBuilder: (context, index) {
+          return _LogWidget(model: logs[index]);
+        },
+      );
+
       subscription = Log._updateStream.stream.listen((event) {
         setState(() {
           logs = Log._logs;
@@ -238,12 +250,8 @@ class _LogConsoleState extends State<_LogConsole> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -259,12 +267,7 @@ class _LogConsoleState extends State<_LogConsole> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: logs.length,
-              itemBuilder: (context, index) {
-                return _LogWidget(model: logs[index]);
-              },
-            ),
+            child: listView ?? Container(),
           ),
         ],
       ),
