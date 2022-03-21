@@ -147,7 +147,8 @@ class Log {
         debugPrintStack(label: error.toString(), stackTrace: stackTrace);
       }
 
-      _addLog(_LogModel(level, _name, formattedMessage, error, stackTrace));
+      _addLog(_LogModel(level, _name, _classColors[_col], formattedMessage,
+          error, stackTrace));
     }
   }
 
@@ -182,14 +183,17 @@ class Log {
   }
 }
 
+/// This model stores the details used to output the log details
 class _LogModel {
   late final Level level;
   late final String caller;
+  late final String callerColour;
   late final String message;
   late final Error? error;
   late final StackTrace? stackTrace;
 
-  _LogModel(this.level, this.caller, this.message, this.error, this.stackTrace);
+  _LogModel(this.level, this.caller, this.callerColour, this.message,
+      this.error, this.stackTrace);
 }
 
 /// The level that the logger can log at
@@ -285,6 +289,15 @@ class _LogWidget extends StatelessWidget {
     Level.wtf: Colors.purple
   };
 
+  static final Map<String, Color> _textColorMap = {
+    Log._green: Colors.green,
+    Log._yellow: Colors.amber,
+    Log._blue: Colors.yellow,
+    Log._magenta: Colors.purple,
+    Log._cyan: Colors.cyan,
+    Log._white: Colors.black
+  };
+
   final _LogModel model;
   final Icon icon;
 
@@ -299,12 +312,25 @@ class _LogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("[${model.caller}] ${model.message}"),
+      title: Text(model.message),
       subtitle: Text(
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
       ),
-      leading: icon,
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            child: icon,
+            padding: const EdgeInsets.only(right: 5),
+          ),
+          Text(
+            "[${model.caller}]",
+            style: TextStyle(color: _textColorMap[model.callerColour]),
+          )
+        ],
+      ),
     );
   }
 }

@@ -22,6 +22,9 @@ Currently empty, will contain some common widgets we use
 
 # **Changelog**
 ## **Version 0.1**
+### **0.1.9**
+- Reformatting the log console output a bit
+
 ### **0.1.8-fix-8**
 - After all this testing, I think I finally got the logger console working
 
