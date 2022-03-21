@@ -26,14 +26,17 @@ class Log {
 
   static final List<_LogModel> _logs = [];
 
-  static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
+  static final StreamController _streamController =
+      StreamController.broadcast();
 
+  static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
       _logs.removeAt(0);
     }
     _logs.add(model);
+    _streamController.add("");
   }
 
   static void showLogger(BuildContext context) {
@@ -218,12 +221,32 @@ class _LogConsole extends StatefulWidget {
 }
 
 class _LogConsoleState extends State<_LogConsole> {
+  late StreamSubscription subscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      subscription = Log._streamController.stream.listen((event) {
+        setState(() {});
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
+              subscription.cancel();
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.close)),
