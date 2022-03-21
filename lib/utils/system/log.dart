@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geoff/utils/maths/random_utils.dart';
 import 'package:geoff/utils/system/system_info.dart';
@@ -25,7 +24,7 @@ class Log {
 
   static bool _logInDebugMode = false;
 
-  static final ObserverList<_LogModel> _logs = ObserverList();
+  static final List<_LogModel> _logs = [];
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
@@ -33,7 +32,7 @@ class Log {
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
-      _logs.remove(_logs.first);
+      _logs.removeAt(0);
     }
     _logs.add(model);
     _updateStream.add("Update!");
@@ -221,21 +220,18 @@ class _LogConsole extends StatefulWidget {
 }
 
 class _LogConsoleState extends State<_LogConsole> {
-
   StreamSubscription? subscription;
 
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      subscription = Log._updateStream.stream.listen((event) {
-        //Blank setstate to reload
-        //setState(() {});
-      });
-    });
-
-    
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   setState(() {
+  //     subscription = Log._updateStream.stream.listen((event) {
+  //       //Blank setstate to reload
+  //       //setState(() {});
+  //     });
+  //   });
+  // }
 
   @override
   void dispose() {
@@ -247,6 +243,8 @@ class _LogConsoleState extends State<_LogConsole> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -265,7 +263,7 @@ class _LogConsoleState extends State<_LogConsole> {
             child: ListView.builder(
               itemCount: Log._logs.length,
               itemBuilder: (context, index) {
-                return _LogWidget(model: Log._logs.elementAt(index));
+                return _LogWidget(model: Log._logs[index]);
               },
             ),
           ),
