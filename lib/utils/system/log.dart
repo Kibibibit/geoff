@@ -28,21 +28,17 @@ class Log {
 
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
-  static final StreamController _updateStream = StreamController.broadcast();
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
       _logs.removeAt(0);
     }
     _logs.add(model);
-    _updateStream.add("Update!");
   }
 
   static void showLogger(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return _LogConsole(
-        logs: _logs,
-      );
+      return const _LogConsole();
     }));
   }
 
@@ -215,43 +211,19 @@ enum Level {
 }
 
 class _LogConsole extends StatefulWidget {
-  const _LogConsole({Key? key, required this.logs}) : super(key: key);
-
-  final List<_LogModel> logs;
+  const _LogConsole({Key? key}) : super(key: key);
 
   @override
   State<_LogConsole> createState() => _LogConsoleState();
 }
 
 class _LogConsoleState extends State<_LogConsole> {
-  StreamSubscription? subscription;
-  late List<_LogModel> logs;
-
-  Widget? listView;
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      logs = widget.logs;
-
-      subscription = Log._updateStream.stream.listen((event) {
-        setState(() {
-          logs = Log._logs;
-        });
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              if (subscription != null) {
-                subscription!.cancel();
-              }
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.close)),
@@ -261,9 +233,9 @@ class _LogConsoleState extends State<_LogConsole> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: logs.length,
+              itemCount: Log._logs.length,
               itemBuilder: (context, index) {
-                return _LogWidget(model: logs[index]);
+                return _LogWidget(model: Log._logs[index]);
               },
             ),
           ),

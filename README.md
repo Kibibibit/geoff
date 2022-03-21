@@ -22,6 +22,9 @@ Currently empty, will contain some common widgets we use
 
 # **Changelog**
 ## **Version 0.1**
+### **0.1.8-testing-2**
+- Doing some testing with versioning, hopefully will actually fix 0.1.8-fix-7
+
 ### **0.1.8-testing-1**
 - Doing some testing with versioning
 
