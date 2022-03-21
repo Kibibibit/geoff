@@ -239,16 +239,14 @@ class _LogConsoleState extends State<_LogConsole> {
       subscription = Log._updateStream.stream.listen((event) {
         setState(() {
           logs = Log._logs;
-          debugPrint("Setting logs to new list of length: ${Log._logs.length}");
+          listView = ListView.builder(
+            itemCount: logs.length,
+            itemBuilder: (context, index) {
+              return _LogWidget(model: logs[index]);
+            },
+          );
         });
       });
-
-      listView = ListView.builder(
-        itemCount: logs.length,
-        itemBuilder: (context, index) {
-          return _LogWidget(model: logs[index]);
-        },
-      );
     });
   }
 
