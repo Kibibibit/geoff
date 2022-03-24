@@ -312,23 +312,31 @@ class _LogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(model.message),
       subtitle: Text(
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
       ),
-      leading: Column(
+      title: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            child: icon,
-            padding: const EdgeInsets.only(bottom: 5),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                child: icon,
+                padding: const EdgeInsets.only(right: 5),
+              ),
+              Text(
+                "[${model.caller}]",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: _textColorMap[model.callerColour]),
+              )
+            ],
           ),
-          Text(
-            "[${model.caller}]",
-            style: TextStyle(fontWeight: FontWeight.bold,color: _textColorMap[model.callerColour]),
-          )
+          Text(model.message),
         ],
       ),
     );
