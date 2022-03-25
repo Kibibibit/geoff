@@ -1,13 +1,11 @@
-
 import 'dart:convert';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:geoff/utils/system/log.dart';
+import 'package:geoff/geoff.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 /// Stores session data for the project, related to authentication and such.
 class Session {
-
   static final Log _logger = Log("Session");
 
   /// Disable the colors in the logs if your terminal does not support escape codes
@@ -17,7 +15,7 @@ class Session {
 
   /// The response to an attempt to get an authentication token.
   /// Make sure to set before use
-  static late AuthorizationTokenResponse tokenResponse;
+  static late TokenResponse tokenResponse;
 
   /// The string representation of your token, equivilant to [tokenResponse.accessToken!]
   static late String token;
@@ -26,16 +24,31 @@ class Session {
   static late String refreshToken;
 
   /// A map storing the information from your token, decoded using jaguar jwt
-  static Map<String, dynamic>  tokenData = {};
+  static Map<String, dynamic> tokenData = {};
+
+  /// Stores the [DateTime] that this token is refreshed at
+  static DateTime? refreshesAt;
+
+  /// The amount of time before a token expires that it will be refreshed
+  static Duration refreshBefore = const Duration(seconds: 10);
+
+  static bool _doRefreshToken = false;
+
+  static Alarm? _refreshAlarm;
+
+  static bool get doRefreshToken => _doRefreshToken;
 
   /// Call this when you get your token. Will return false if the token was null, true otherwise
-  static bool onToken(AuthorizationTokenResponse response) {
-
+  static bool onToken(TokenResponse response) {
     if (response.accessToken != null) {
       _logger.info("Got a token!");
       tokenResponse = response;
       token = response.accessToken!;
       refreshToken = response.refreshToken!;
+
+      if (response.accessTokenExpirationDateTime != null) {
+        refreshesAt = response.accessTokenExpirationDateTime;
+      }
 
       List<String> parts = token.split('.');
       String payload = parts[1];
@@ -46,9 +59,36 @@ class Session {
       _logger.error("Token was null!");
       return false;
     }
-
-
-    
   }
 
+  static void startTokenLoop() {
+    _doRefreshToken = true;
+    _refreshTokenLoop();
+  }
+
+  static void _refreshTokenLoop() {
+    if (_doRefreshToken && refreshesAt != null) {
+      _refreshAlarm = Alarm.at(refreshesAt!.subtract(refreshBefore), () async {
+        TokenResponse? result = await AppAuthHelper.refreshToken(refreshToken);
+        if (result != null) {
+          onToken(result);
+          _refreshTokenLoop();
+        }
+        _logger.error("Got null token respones!");
+        _doRefreshToken = false;
+      });
+    }
+  }
+
+  static void stopRefreshTokenLoop() {
+    if (_doRefreshToken && _refreshAlarm != null) {
+      if (_refreshAlarm!.isActive) {
+        _refreshAlarm!.cancel();
+      }
+      _doRefreshToken = false;
+      _logger.info("Stopped refresh token loop!");
+      return;
+    }
+    _logger.warning("No refresh token loop running to stop!");
+  }
 }

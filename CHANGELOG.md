@@ -1,8 +1,14 @@
 # **Changelog**
-## **Version 0.1**
+
+## **Version 0.2**
+### **0.2.1**
+- Added a refresh token loop that can be triggered from `Session`
+- Added Alarms
+
 ### **0.2.0**
 - First proper release
 
+## **Version 0.1**
 ### **0.1.9-fix-4**
 - Adjusted the styling of the logger again
   

@@ -50,44 +50,60 @@ class AppAuthHelper {
     _scopes = scopes;
   }
 
-  /// Will open up a browser showing the authentication provider and attempt to get a token. Returns null if closed or if there is an error
-  /// with the config
-  static Future<AuthorizationTokenResponse?> login({String? redirectUrl, String? clientId, String? realm, String? authServerUrl}) async {
+  static String get discoveryUrl {
+    return "$_authServerUrl/realms/$_realm/.well-known/openid-configuration";
+  }
 
+
+  static bool _checkFields(String? redirectUrl, String? clientId, String? realm, String? authServerUrl) {
     redirectUrl ??= _redirectUrl;
     if (redirectUrl == null) {
       _logger.error("Redirect URL is null! You can set it with setRedirectUrl, or pass it into this method");
-      return null;
+      return false;
     }
+    
+    setRedirectUrl(redirectUrl);
 
     clientId ??= _clientId;
     if (clientId == null) {
       _logger.error("Client ID is null! You can set it with setClientId, or pass it into this method");
-      return null;
+      return false;
     }
+    setClientId(clientId);
 
     realm ??= _realm;
     if (realm == null) {
-      _logger.error("Realm is null! You can set it with setRealm, or pass it into this method");
-      return null;
+      return false;
     }
+    setRealm(realm);
 
     authServerUrl ??= _authServerUrl;
     if (authServerUrl == null) {
       _logger.error("Auth Server URL is null! You can set it with setAuthServerUrl, or pass it into this method");
-      return null;
+      return false;
     }
+    setAuthServerUrl(authServerUrl);
+
+    return true;
+  }
 
 
-    String discoveryurl = "$authServerUrl/realms/$realm/.well-known/openid-configuration";
+  /// Will open up a browser showing the authentication provider and attempt to get a token. Returns null if closed or if there is an error
+  /// with the config
+  static Future<AuthorizationTokenResponse?> login({String? redirectUrl, String? clientId, String? realm, String? authServerUrl}) async {
 
-    _logger.debug("Discovery URL is: $discoveryurl");
+    _logger.debug("Trying to log in!");
+    if (!_checkFields(redirectUrl, clientId, realm, authServerUrl)) {
+      return null;
+    }    
+
+    _logger.debug("Discovery URL is: $discoveryUrl");
 
     AuthorizationTokenResponse? result = await _appAuth.authorizeAndExchangeCode(
       AuthorizationTokenRequest(
-        clientId, 
-        redirectUrl,
-        discoveryUrl: discoveryurl,
+        _clientId!, 
+        _redirectUrl!,
+        discoveryUrl: discoveryUrl,
         scopes: _scopes
       )
     );
@@ -98,6 +114,23 @@ class AppAuthHelper {
 
     return result;
 
+  }
+
+  static Future<TokenResponse?> refreshToken(String refreshToken, {String? redirectUrl, String? clientId, String? realm, String? authServerUrl})  async {
+    if (!_checkFields(redirectUrl, clientId, realm, authServerUrl)) {
+      return null;
+    }
+
+    _logger.debug("Trying to refresh token!");
+    TokenResponse? result = await _appAuth.token(TokenRequest(_clientId!, _redirectUrl!,
+        discoveryUrl: discoveryUrl,
+        refreshToken: refreshToken,
+        scopes: _scopes));
+    
+    if (result == null) {
+      _logger.warning("Getting refresh token returned null!");
+    }
+    return result;
   }
 
 }
