@@ -1,6 +1,5 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:geoff/geoff.dart';
-import 'package:geoff/utils/system/log.dart';
 
 /// This class can be used to log in using a [FlutterAppAuth]. It contains several helper methods
 /// and stores a lot of parameters statically to help set up the project.
@@ -125,12 +124,16 @@ class AppAuthHelper {
       return false;
     }
 
+    
+
     tokenId ??= Session.tokenResponse?.idToken;
 
     if (tokenId == null) {
       _logger.error("Don't have a token id!");
       return false;
     }
+
+    _logger.debug("Discovery URL is: $discoveryUrl, tokenId is $tokenId. Redirect url is $redirectUrl");
 
     EndSessionResponse? endSessionResponse =
         await _appAuth.endSession(EndSessionRequest(
