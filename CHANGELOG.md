@@ -1,8 +1,16 @@
 # **Changelog**
-## **Version 0.1**
+
+## **Version 0.2**
+### **0.2.1**
+- Added a refresh token loop that can be triggered from `Session`
+- Added Alarms
+- Added the ability to log out
+- Session and AppAuthHelper now more closely intertwined, no need to call both on login/logout
+
 ### **0.2.0**
 - First proper release
 
+## **Version 0.1**
 ### **0.1.9-fix-4**
 - Adjusted the styling of the logger again
   
