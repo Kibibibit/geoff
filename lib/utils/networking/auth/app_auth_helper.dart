@@ -87,8 +87,9 @@ class AppAuthHelper {
     return true;
   }
 
-  /// Will open up a browser showing the authentication provider and attempt to get a token. Returns null if closed or if there is an error
-  /// with the config
+  /// Will open up a browser showing the authentication provider and attempt to get a token. Returns true on a successful token.
+  /// Calls [Session.onToken] on success so you can get your token from [Session.token].
+  /// Setting [tokenLoop] to true will automatically make it call [Session.startTokenLoop] on successful login
   static Future<bool> login(
       {bool tokenLoop = true,
       String? redirectUrl,
@@ -120,7 +121,8 @@ class AppAuthHelper {
     return success;
   }
 
-  /// Logs the user out,
+  /// Logs the user out, based on the given tokenId. Will automatically grab the one from [Session] by default
+  /// Returns true on successful logout
   static Future<bool> logout(
       {String? tokenId,
       String? redirectUrl,
@@ -158,6 +160,8 @@ class AppAuthHelper {
     return false;
   }
 
+  /// Refreshes the token using the given refresh token. By default, does not update the session.
+  /// DON'T CALL THIS: Unless you are manually handling session data
   static Future<TokenResponse?> refreshToken(String refreshToken,
       {String? redirectUrl,
       String? clientId,

@@ -100,6 +100,7 @@ class Session {
     _logger.warning("No refresh token loop running to stop!");
   }
 
+  /// Stops the token refresh loop and clears token data
   static void onLogout() {
     stopRefreshTokenLoop();
     tokenResponse = null;
