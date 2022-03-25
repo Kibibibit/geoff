@@ -6,7 +6,7 @@ class StatusCode {
 
 
   // 100 Codes
-  /// Couldn't use continue because its a keywork :(
+  /// Couldn't use continue because its a keyword :(
   static const int cont = 100;
   static const int switchingProtocols = 101;
   static const int processing = 102;
@@ -79,7 +79,7 @@ class StatusCode {
   static const int notExtended = 510;
   static const int networkAuthenticationRequired = 511;
 
-
+  // Returns the string value of a given status code, if it is known
   static String codeValue(int code) {
     if (_asString.containsKey(code)) {
       return _asString[code]!;
