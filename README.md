@@ -22,6 +22,9 @@ Currently empty, will contain some common widgets we use
 
 # **Changelog**
 ## **Version 0.1**
+### **0.2.0**
+- First proper release
+
 ### **0.1.9-fix-4**
 - Adjusted the styling of the logger again
   
