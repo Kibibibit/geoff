@@ -71,13 +71,14 @@ class Alarm {
   }
 
   /// Starts the alarm.
-  void start() {
+  Alarm start() {
     _onDateTime ? _createFromDateTime(_at) : _createFromDuration(_after);
     if (_after.isNegative) {
       _logger.warning("Duration for alarm is negative!, triggering now!");
       _after = Duration.zero;
     }
     _timer = Timer(_after, _alarm);
+    return this;
   }
 
   void _createFromDateTime(DateTime at) {
