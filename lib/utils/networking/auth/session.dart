@@ -74,10 +74,13 @@ class Session {
       _refreshAlarm = Alarm.at(refreshesAt!.subtract(refreshBefore), () async {
         TokenResponse? result = await AppAuthHelper.refreshToken(refreshToken);
         if (result != null) {
-          onToken(result);
-          _refreshTokenLoop();
+          if (onToken(result)) {
+            _refreshTokenLoop();
+            return;
+          }
+          return;
         }
-        _logger.error("Got null token respones!");
+        _logger.error("Got null token response!");
         _doRefreshToken = false;
       });
     }
