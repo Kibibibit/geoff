@@ -36,6 +36,7 @@ class Session {
 
   static Alarm? _refreshAlarm;
 
+  /// Whether or not the refreshToken loop is running
   static bool get doRefreshToken => _doRefreshToken;
 
   /// Call this when you get your token. Will return false if the token was null, true otherwise
@@ -61,6 +62,8 @@ class Session {
     }
   }
 
+  /// Starts the refresh token loop, will refresh [refreshBefore] before
+  /// the token expires. You can stop with [stopRefreshTokenLoop]
   static void startTokenLoop() {
     _doRefreshToken = true;
     _refreshTokenLoop();
@@ -80,6 +83,8 @@ class Session {
     }
   }
 
+
+  /// Stops the token refresh loop
   static void stopRefreshTokenLoop() {
     if (_doRefreshToken && _refreshAlarm != null) {
       if (_refreshAlarm!.isActive) {
