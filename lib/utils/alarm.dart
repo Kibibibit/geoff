@@ -20,6 +20,7 @@ class Alarm {
   late Timer _timer;
   late final bool _onDateTime;
 
+  /// The alarm starts automatically when called
   static Alarm at(DateTime at, void Function() callback) {
     Alarm alarm = Alarm._(callback, true);
     alarm._at = at;
