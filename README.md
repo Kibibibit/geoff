@@ -17,3 +17,8 @@ Contains an extension of the dart logger, and some system info utils
 
 ## **Widgets**
 Currently empty, will contain some common widgets we use
+
+---
+
+## **Changelog**
+Available [here](https://github.com/Kibibibit/geoff/blob/main/CHANGELOG.md)!
