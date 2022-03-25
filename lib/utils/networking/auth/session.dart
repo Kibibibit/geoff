@@ -15,13 +15,13 @@ class Session {
 
   /// The response to an attempt to get an authentication token.
   /// Make sure to set before use
-  static late TokenResponse tokenResponse;
+  static TokenResponse? tokenResponse;
 
   /// The string representation of your token, equivilant to [tokenResponse.accessToken!]
-  static late String token;
+  static String? token;
 
   /// The refresh token from the token response, equivilant to [tokenResponse.refreshToken!]
-  static late String refreshToken;
+  static String? refreshToken;
 
   /// A map storing the information from your token, decoded using jaguar jwt
   static Map<String, dynamic> tokenData = {};
@@ -51,7 +51,7 @@ class Session {
         refreshesAt = response.accessTokenExpirationDateTime;
       }
 
-      List<String> parts = token.split('.');
+      List<String> parts = token!.split('.');
       String payload = parts[1];
       String decoded = B64urlEncRfc7515.decodeUtf8(payload);
       tokenData = json.decode(decoded);
@@ -70,9 +70,9 @@ class Session {
   }
 
   static void _refreshTokenLoop() {
-    if (_doRefreshToken && refreshesAt != null) {
+    if (_doRefreshToken && refreshesAt != null && refreshToken != null) {
       _refreshAlarm = Alarm.at(refreshesAt!.subtract(refreshBefore), () async {
-        TokenResponse? result = await AppAuthHelper.refreshToken(refreshToken);
+        TokenResponse? result = await AppAuthHelper.refreshToken(refreshToken!);
         if (result != null) {
           if (onToken(result)) {
             _refreshTokenLoop();
@@ -98,5 +98,13 @@ class Session {
       return;
     }
     _logger.warning("No refresh token loop running to stop!");
+  }
+
+  static void onLogout() {
+    stopRefreshTokenLoop();
+    tokenResponse = null;
+    token = null;
+    refreshToken = null;
+    tokenData = {};
   }
 }
