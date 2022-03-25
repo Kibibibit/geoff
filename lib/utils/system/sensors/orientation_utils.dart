@@ -1,11 +1,12 @@
 import 'package:geoff/utils/system/log.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 
-
+/// Contains utilities for getting the orientation of the device
 class DeviceOrientation {
 
   static final Log _logger = Log("OrientationUtils");
 
+  /// Disable the colors in the logs if your terminal does not support escape codes
   static void disableColors() {
     _logger.setColors(false);
   }
