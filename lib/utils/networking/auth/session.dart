@@ -83,7 +83,6 @@ class Session {
         _logger.error("Got null token response!");
         _doRefreshToken = false;
       });
-      _refreshAlarm!.start();
     }
   }
 
