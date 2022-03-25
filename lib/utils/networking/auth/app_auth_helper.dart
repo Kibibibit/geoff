@@ -90,7 +90,8 @@ class AppAuthHelper {
   /// Will open up a browser showing the authentication provider and attempt to get a token. Returns null if closed or if there is an error
   /// with the config
   static Future<bool> login(
-      {String? redirectUrl,
+      {bool tokenLoop = true,
+      String? redirectUrl,
       String? clientId,
       String? realm,
       String? authServerUrl}) async {
@@ -111,18 +112,21 @@ class AppAuthHelper {
       return false;
     }
 
-    return Session.onToken(result);
+    bool success = Session.onToken(result);
+
+    if (success) {
+      Session.startTokenLoop();
+    }
+    return success;
   }
 
-
-  /// Logs the user out, 
+  /// Logs the user out,
   static Future<bool> logout(
       {String? tokenId,
       String? redirectUrl,
       String? clientId,
       String? realm,
       String? authServerUrl}) async {
-
     if (!_checkFields(redirectUrl, clientId, realm, authServerUrl)) {
       return false;
     }
