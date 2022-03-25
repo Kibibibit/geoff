@@ -89,14 +89,14 @@ class AppAuthHelper {
 
   /// Will open up a browser showing the authentication provider and attempt to get a token. Returns null if closed or if there is an error
   /// with the config
-  static Future<AuthorizationTokenResponse?> login(
+  static Future<bool> login(
       {String? redirectUrl,
       String? clientId,
       String? realm,
       String? authServerUrl}) async {
     _logger.debug("Trying to log in!");
     if (!_checkFields(redirectUrl, clientId, realm, authServerUrl)) {
-      return null;
+      return false;
     }
 
     _logger.debug("Discovery URL is: $discoveryUrl");
@@ -108,9 +108,10 @@ class AppAuthHelper {
 
     if (result == null) {
       _logger.warning("Auth Token Request returned null!");
+      return false;
     }
 
-    return result;
+    return Session.onToken(result);
   }
 
 
@@ -130,6 +131,7 @@ class AppAuthHelper {
 
     if (tokenId == null) {
       _logger.error("Don't have a token id!");
+      Session.onLogout();
       return false;
     }
 
@@ -144,9 +146,11 @@ class AppAuthHelper {
 
     if (endSessionResponse != null) {
       _logger.debug("End Session State: ${endSessionResponse.state}");
+      Session.onLogout();
       return true;
     }
     _logger.error("End Session response was null!");
+    Session.onLogout();
     return false;
   }
 
