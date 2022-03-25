@@ -133,12 +133,12 @@ class AppAuthHelper {
       return false;
     }
 
-    _logger.debug("Discovery URL is: $discoveryUrl, tokenId is $tokenId. Redirect url is $redirectUrl");
+    _logger.debug("Discovery URL is: $discoveryUrl, tokenId is $tokenId. Redirect url is $_redirectUrl");
 
     EndSessionResponse? endSessionResponse =
         await _appAuth.endSession(EndSessionRequest(
       idTokenHint: tokenId,
-      postLogoutRedirectUrl: redirectUrl,
+      postLogoutRedirectUrl: _redirectUrl,
       discoveryUrl: discoveryUrl,
     ));
 
