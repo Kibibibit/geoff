@@ -113,6 +113,8 @@ class AppAuthHelper {
     return result;
   }
 
+
+  /// Logs the user out, 
   static Future<bool> logout(
       {String? tokenId,
       String? redirectUrl,
@@ -124,8 +126,6 @@ class AppAuthHelper {
       return false;
     }
 
-    
-
     tokenId ??= Session.tokenResponse?.idToken;
 
     if (tokenId == null) {
@@ -133,7 +133,7 @@ class AppAuthHelper {
       return false;
     }
 
-    _logger.debug("Discovery URL is: $discoveryUrl, tokenId is $tokenId. Redirect url is $_redirectUrl");
+    _logger.debug("Discovery URL is: $discoveryUrl");
 
     EndSessionResponse? endSessionResponse =
         await _appAuth.endSession(EndSessionRequest(
