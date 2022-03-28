@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:geoff/utils/system/log.dart';
 
 /// Creates an alarm object that will run a callback, either at a given time or after a certain duration.
-/// The alarm will start its' countdown until [start] is called if given a [DateTime]. If the duration is negative
+/// The alarm will not start its' countdown until [start] is called if given a [DateTime]. If the duration is negative
 /// or the time to trigger on has already passed, the alarm will trigger immediatly
 class Alarm {
 

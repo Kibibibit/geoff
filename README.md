@@ -100,7 +100,6 @@ Alarm alarm2 = Alarm.at(DateTime.now().add(Duration(seconds:10)), () {
     _logger.info("Alarm went off!");
 });
 
-alarm2.start();
 // This alarm will go off 10 seconds after it was created.
 // Note that if 10 seconds have already passed, it will go off immediatly
 ```
