@@ -3,6 +3,7 @@
 ## **Version 0.2**
 ### **0.2.3**
 - Readme updates
+- Added `wrapInt` and `wrapDouble` to number utils
 ### **0.2.2**
 - Added the ability to copy logs to clipboard
 
