@@ -21,11 +21,25 @@ class RandomUtils {
     _random = Random(seed);
   }
   
-  /// Gives an int in the given range from [min] (inclusive) to [max] (exclusive)
+  /// Gives an int in the given range from [min] (inclusive) to [max] (inclusive)
   static int intInRange(int min, int max) {
-    return min + _getRandom().nextInt(max-min);
+    if (min > max) {
+      int i = max;
+      max = min;
+      min = i;
+    }
+    return min + _getRandom().nextInt(max-min+1);
   }
-
+  
+  /// Gives a double in the given range from [min] (inclusive) to [max] (inclusive)
+  static double doubleInRange(double min, double max) {
+    if (min > max) {
+      double i = max;
+      max = min;
+      min = i;
+    }
+    return min + _getRandom().nextDouble() * (max-min).abs();
+  }
 
 
 }
