@@ -5,6 +5,7 @@
 - Readme updates
 - Added `wrapInt` and `wrapDouble` to number utils
 - Added `doubleInRange` and made changes to `RandomUtils`
+- Corrected name of GRPC Utils
 ### **0.2.2**
 - Added the ability to copy logs to clipboard
 
