@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geoff/utils/maths/random_utils.dart';
 import 'package:geoff/utils/system/system_info.dart';
 
@@ -334,7 +335,20 @@ class _LogWidget extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: _textColorMap[model.callerColour]),
-              )
+              ),
+              Expanded(child: Container()),
+              IconButton(
+                onPressed: () {
+
+                  String message = "[${model.caller}] ${model.message}";
+                  if (model.error != null) {
+                    message = "$message : ${model.error!.stackTrace.toString()}";
+                  }
+
+                  Clipboard.setData(ClipboardData(text:message));
+                },
+                icon: const Icon(Icons.copy),
+              ),
             ],
           ),
           Text(model.message),
