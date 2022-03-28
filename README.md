@@ -47,7 +47,7 @@ Instructions taken from [here](https://pub.dev/packages/flutter_appauth#android-
 ## iOS Setup
 
 You will need to update your `Info.plist` to include the following:
-```plist
+```xml
 <key>CFBundleURLTypes</key>
 <array>
     <dict>
@@ -55,7 +55,7 @@ You will need to update your `Info.plist` to include the following:
         <string>Editor</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string><your_custom_scheme></string>
+            <string>your_custom_scheme</string>
         </array>
     </dict>
 </array>
