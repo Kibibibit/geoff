@@ -1,6 +1,9 @@
 # **Changelog**
 
 ## **Version 0.2**
+### **0.2.2**
+- Added the ability to copy logs to clipboard
+
 ### **0.2.1**
 - Added a refresh token loop that can be triggered from `Session`
 - Added Alarms

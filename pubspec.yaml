@@ -1,6 +1,6 @@
 name: geoff
 description: A library of common code used in our projects
-version: 0.2.1
+version: 0.2.2
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
