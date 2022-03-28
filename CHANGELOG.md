@@ -1,6 +1,8 @@
 # **Changelog**
 
 ## **Version 0.2**
+### **0.2.3**
+- Readme updates
 ### **0.2.2**
 - Added the ability to copy logs to clipboard
 
