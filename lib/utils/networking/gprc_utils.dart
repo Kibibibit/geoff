@@ -2,7 +2,7 @@ import 'package:grpc/grpc.dart';
 
 
 /// Utils related to grpc communication
-class ProtoUtils {
+class GrpcUtils {
 
 
   /// Returns a [ClientChannel] for grpc communication
