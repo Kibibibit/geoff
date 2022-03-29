@@ -20,7 +20,7 @@ class MayRest {
   /// The token of the currently logged in user
   static String? userToken;
 
-  static const Map<String, String> defaultHeaders = {
+  static Map<String, String> defaultHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   };
@@ -65,10 +65,11 @@ class MayRest {
   static Future<http.Response> get(String url,
       {bool quiet = false,
       bool noToken = false,
-      Map<String, String> headers = defaultHeaders}) {
+      Map<String, String>? headers}) {
     if (!quiet) {
       _logger.info("GETting data from $url using ${_tokenString(noToken)}");
     }
+    headers ??= defaultHeaders;
     return http
         .get(Uri.parse(Uri.encodeFull(url)),
             headers: _addAuth(headers, noToken))
@@ -81,11 +82,11 @@ class MayRest {
   static Future<http.Response> post(String url, dynamic body,
       {bool quiet = false,
       bool noToken = false,
-      Map<String, String> headers = defaultHeaders}) {
+      Map<String, String>? headers}) {
+        headers ??=defaultHeaders;
     if (headers["Content-Type"] == "application/json" && body != null) {
       body = jsonEncode(body);
     }
-
     if (!quiet) {
       _logger.info(
           "POSTting ${body == null ? "empty data" : "$body"} to $url using ${_tokenString(noToken)}");
@@ -103,12 +104,12 @@ class MayRest {
   static Future<http.Response> put(String url, dynamic body,
       {bool quiet = false,
       bool noToken = false,
-      Map<String, String> headers = defaultHeaders}) {
+      Map<String, String>? headers}) {
     if (!quiet) {
       _logger.info(
           "PUTting ${body == null ? "empty data" : "$body"} at $url using ${_tokenString(noToken)}");
     }
-
+    headers??=defaultHeaders;
     return http
         .put(Uri.parse(Uri.encodeFull(url)),
             body: body, headers: _addAuth(headers, noToken))
@@ -121,11 +122,12 @@ class MayRest {
   static Future<http.Response> delete(String url, dynamic body,
       {bool quiet = false,
       bool noToken = false,
-      Map<String, String> headers = defaultHeaders}) {
+      Map<String, String>? headers}) {
     if (!quiet) {
       _logger.info(
           "DELETING ${body == null ? "empty data" : "$body"} at $url using ${_tokenString(noToken)}");
     }
+    headers??=defaultHeaders;
     return http
         .delete(Uri.parse(Uri.encodeFull(url)),
             body: body, headers: _addAuth(headers, noToken))
