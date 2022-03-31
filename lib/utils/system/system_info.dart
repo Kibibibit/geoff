@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as found;
 
 class SystemInfo {
   /// If true, the application is running in debug mode
-  static bool debugMode = found.kDebugMode;
+  static bool get debugMode => found.kDebugMode;
 
   static late final Platform? _platform;
 
