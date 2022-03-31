@@ -78,29 +78,17 @@ class Log {
         _colors = colors,
         _level = level;
 
-  String get name {
-    return _name;
-  }
+  String get name => _name;
 
-  Level get level {
-    return _level;
-  }
+  Level get level => _level;
 
-  bool get colors {
-    return _colors;
-  }
+  bool get colors => _colors;
 
-  int get maxLogs {
-    return _maxLogs;
-  }
+  int get maxLogs => _maxLogs;
 
-  double get iconSize {
-    return _iconSize;
-  }
+  double get iconSize => _iconSize;
 
-  bool get logInDebugMode {
-    return _logInDebugMode;
-  }
+  bool get logInDebugMode => _logInDebugMode;
 
   void setLogInDebugMode(bool log) {
     _logInDebugMode = log;
@@ -113,7 +101,9 @@ class Log {
   }
 
   void setIconSize(double iconSize) {
-    _iconSize = iconSize;
+    if (iconSize >= 0) {
+      _iconSize = iconSize;
+    }
   }
 
   void setColors(bool colors) {
