@@ -378,10 +378,10 @@ class _LogWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: _textColorMap[model.callerColour],
                 ),
-                highlightStyle: TextStyle(
+                highlightStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
-                  color: _textColorMap[model.callerColour],
+                  color: Colors.red,
                 ),
               ),
               Expanded(child: Container()),
