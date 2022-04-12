@@ -283,6 +283,7 @@ class _LogConsoleState extends State<_LogConsole> {
               
             ),
           ),
+          const Divider(),
           Expanded(
             child: ListView.builder(
               itemCount: filteredLogs.length,
