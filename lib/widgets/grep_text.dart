@@ -77,7 +77,7 @@ class GrepText extends StatelessWidget {
 
     return RichText(
       text: _array.isEmpty
-          ? TextSpan(text: _text, style: textStyle)
+          ? TextSpan(text: _text, style: style)
           : TextSpan(children: _spans),
       textAlign: textAlign,
       textDirection: textDirection,

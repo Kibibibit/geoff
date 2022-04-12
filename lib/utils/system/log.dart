@@ -261,6 +261,7 @@ class _LogConsoleState extends State<_LogConsole> {
         leading: IconButton(
             onPressed: () {
               subscription.cancel();
+              search("");
               Navigator.of(context).pop();
             },
             icon: const Icon(Icons.close)),
