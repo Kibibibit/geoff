@@ -238,6 +238,9 @@ class _LogConsoleState extends State<_LogConsole> {
   }
 
   void search(String searchTerm) {
+    if (searchTerm == "") {
+      _controller.clear();
+    }
     setState(() {
       this.searchTerm = searchTerm;
     });
@@ -270,6 +273,14 @@ class _LogConsoleState extends State<_LogConsole> {
             child: TextField(
               controller: _controller,
               onChanged: (searchTerm) => search(searchTerm),
+              autocorrect: false,
+              enableSuggestions: false,
+              
+              decoration: InputDecoration(
+                label: const Text("Search"),
+                suffix: IconButton(onPressed: () => search(""), icon: const Icon(Icons.close))
+              ),
+              
             ),
           ),
           Expanded(
