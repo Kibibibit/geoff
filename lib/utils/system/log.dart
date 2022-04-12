@@ -224,7 +224,6 @@ class _LogConsoleState extends State<_LogConsole> {
   void initState() {
     super.initState();
     search("");
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
         setState(() {});
