@@ -30,26 +30,26 @@ class MayRest {
 
   /// Adds headers, plus [Session.token] onto an api call
   static Map<String, String> _addAuth(Map<String, String> headers,
-      [bool noToken = false]) {
+      [bool noToken = false, String? token]) {
     Map<String, String> newHeaders = {};
 
     newHeaders.addAll(headers);
-
-    if (Session.token != null && !noToken) {
-      newHeaders["Authorization"] = "Bearer ${Session.token}";
-    } else if (!noToken && Session.token == null) {
+    
+    if (token != null && !noToken) {
+      newHeaders["Authorization"] = "Bearer $token";
+    } else if (!noToken && token == null) {
       _logger.warning(
-          "noToken is true but no token is set! make sure to set Session.token");
+          "noToken is true but no token is set! make sure to set Session.token, or pass a token into your request");
     }
 
     return newHeaders;
   }
 
   /// Just a helper function to make the logs nicer
-  static String _tokenString(bool noToken) {
-    return Session.token == null || noToken
+  static String _tokenString(String? token, bool noToken) {
+    return token == null || noToken
         ? "no token"
-        : "token: ${Session.token?.substring(0, (Session.token!.length * 0.1).round())}...";
+        : "token: ${token.substring(0, (token.length * 0.1).round())}...";
   }
 
   /// Log the output at a specific level based on output
@@ -70,12 +70,14 @@ class MayRest {
   }
 
   /// Makes a request at the requested [_RequestType] level
-  static Future<http.Response> _makeRequest(_RequestType requestType, String url, {Object? body, bool quiet = false, bool noToken = false, Map<String,String>? headers}) {
+  static Future<http.Response> _makeRequest(_RequestType requestType, String url, {Object? body, bool quiet = false, String? token, bool noToken = false, Map<String,String>? headers}) {
 
       Map<String, String> _headers = defaultHeaders;
       _headers.addAll(headers ?? {});
 
-      _headers = _addAuth(_headers, noToken);
+      token ??= Session.token;
+
+      _headers = _addAuth(_headers, noToken, token);
 
       if (_headers.containsValue("application/json") && body != null) {
         body = jsonEncode(body);
@@ -91,7 +93,7 @@ class MayRest {
         _RequestType.patch : http.patch(uri, body: body, headers: headers)
       };
 
-      if (!quiet) _logger.info("Sending ${requestType.name.toUpperCase()} request to ${url.toString()} using token: ${_tokenString(noToken)} ${body == null ? "" : ", with body: ${body.toString()}"}");
+      if (!quiet) _logger.info("Sending ${requestType.name.toUpperCase()} request to ${url.toString()} using token: ${_tokenString(token, noToken)} ${body == null ? "" : ", with body: ${body.toString()}"}");
       
       return functions[requestType]!.then((http.Response response) {
         if (!quiet) _responseOutput(response);
@@ -100,24 +102,24 @@ class MayRest {
   }
 
   /// Makes a GET request to url
-  static Future<http.Response> get(String url, {bool quiet = false, bool noToken = false, Map<String,String>? headers}) => 
-    _makeRequest(_RequestType.get, url, quiet: quiet, noToken: noToken, headers: headers);
+  static Future<http.Response> get(String url, {bool quiet = false, String? token, bool noToken = false, Map<String,String>? headers}) => 
+    _makeRequest(_RequestType.get, url, quiet: quiet, noToken: noToken, headers: headers, token: token);
 
   /// Makes a POST request to url
-  static Future<http.Response> post(String url, {Object? body, bool quiet = false, bool noToken = false, Map<String,String>? headers}) =>
-    _makeRequest(_RequestType.post, url, body: body, quiet: quiet, noToken: noToken, headers: headers);
+  static Future<http.Response> post(String url, {Object? body, bool quiet = false, String? token, bool noToken = false, Map<String,String>? headers}) =>
+    _makeRequest(_RequestType.post, url, body: body, quiet: quiet, noToken: noToken, headers: headers, token: token);
 
   /// Makes a PUT request to url
-  static Future<http.Response> put(String url, {Object? body, bool quiet = false, bool noToken = false, Map<String, String>? headers}) =>
-    _makeRequest(_RequestType.put, url, body: body, quiet: quiet, noToken: noToken, headers: headers);
+  static Future<http.Response> put(String url, {Object? body, bool quiet = false, String? token, bool noToken = false, Map<String, String>? headers}) =>
+    _makeRequest(_RequestType.put, url, body: body, quiet: quiet, noToken: noToken, headers: headers, token: token);
 
   /// Makes a DELETE request to url
-  static Future<http.Response> delete(String url, {Object? body, bool quiet = false, bool noToken = false, Map<String, String>? headers}) =>
-    _makeRequest(_RequestType.delete, url, body: body, quiet: quiet, noToken: noToken, headers: headers);
+  static Future<http.Response> delete(String url, {Object? body, bool quiet = false, String? token, bool noToken = false, Map<String, String>? headers}) =>
+    _makeRequest(_RequestType.delete, url, body: body, quiet: quiet, noToken: noToken, headers: headers, token: token);
 
   /// Makes a PATCH request to url
-  static Future<http.Response> patch(String url, {Object? body, bool quiet = false, bool noToken = false, Map<String, String>? headers}) =>
-    _makeRequest(_RequestType.patch, url, body: body, headers: headers, quiet:  quiet, noToken: noToken);
+  static Future<http.Response> patch(String url, {Object? body, bool quiet = false, String? token, bool noToken = false, Map<String, String>? headers}) =>
+    _makeRequest(_RequestType.patch, url, body: body, headers: headers, quiet:  quiet, noToken: noToken, token: token);
 
 
 }
