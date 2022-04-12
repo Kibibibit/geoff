@@ -1,6 +1,10 @@
 # **Changelog**
 
 ## **Version 0.2**
+### **0.2.4**
+- Re-wrote `MayRest` to reduce code duplication
+- Added `patch` to `MayRest`
+
 ### **0.2.3**
 - Readme updates
 - Added `wrapInt` and `wrapDouble` to number utils
