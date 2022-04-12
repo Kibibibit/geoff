@@ -43,9 +43,11 @@ class GrepText extends StatelessWidget {
   Widget build(BuildContext context) {
     String _text = text ?? "";
 
-    TextStyle style = textStyle ?? const TextStyle(color: Colors.black);
+    TextStyle style = textStyle ?? (Theme.of(context).textTheme.bodyText2 ?? const TextStyle()).apply(color: Colors.black);
 
-    TextStyle highlight = highlightStyle ?? const TextStyle(fontWeight: FontWeight.bold, color: Colors.red);
+    TextStyle highlight = highlightStyle ??
+        (Theme.of(context).textTheme.bodyText2 ?? const TextStyle())
+            .apply(fontWeightDelta: 700, color: Colors.red);
 
     List<String> _array = [];
     List<InlineSpan> _spans = [];
@@ -57,7 +59,7 @@ class GrepText extends StatelessWidget {
       for (String split in _array) {
         _spans.add(TextSpan(
           text: split,
-          style: textStyle,
+          style: style,
           locale: locale,
         ));
 
