@@ -3,8 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geoff/utils/maths/random_utils.dart';
-import 'package:geoff/utils/system/system_info.dart';
+import 'package:geoff/geoff.dart';
 
 /// An extension of the dart logger, but includes class names
 class Log {
@@ -218,10 +217,13 @@ class _LogConsole extends StatefulWidget {
 class _LogConsoleState extends State<_LogConsole> {
   late StreamSubscription subscription;
 
+  final TextEditingController _controller = TextEditingController();
+  String searchTerm = "";
+
   @override
   void initState() {
     super.initState();
-
+    search("");
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
         setState(() {});
@@ -235,8 +237,22 @@ class _LogConsoleState extends State<_LogConsole> {
     super.dispose();
   }
 
+  void search(String searchTerm) {
+    setState(() {
+      this.searchTerm = searchTerm;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<_LogModel> filteredLogs = Log._logs
+        .where((_LogModel model) =>
+            (model.caller.contains(searchTerm) ||
+                model.message.contains(searchTerm) ||
+                model.level.name.toLowerCase() == searchTerm.toLowerCase()) ||
+            searchTerm == "")
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -249,11 +265,21 @@ class _LogConsoleState extends State<_LogConsole> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextField(
+              controller: _controller,
+              onChanged: (searchTerm) => search(searchTerm),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
-              itemCount: Log._logs.length,
+              itemCount: filteredLogs.length,
               itemBuilder: (context, index) {
-                return _LogWidget(model: Log._logs[index]);
+                return _LogWidget(
+                  model: filteredLogs[index],
+                  searchTerm: searchTerm,
+                );
               },
             ),
           ),
@@ -290,13 +316,25 @@ class _LogWidget extends StatelessWidget {
   };
 
   final _LogModel model;
-  final Icon icon;
+  final Widget icon;
+  final String searchTerm;
 
-  _LogWidget({Key? key, required this.model})
-      : icon = Icon(
-          _iconMap[model.level],
-          color: _colorMap[model.level],
-          size: Log._iconSize,
+  _LogWidget({Key? key, required this.model, required this.searchTerm})
+      : icon = Container(
+          child: Icon(
+            _iconMap[model.level],
+            color: _colorMap[model.level],
+            size: Log._iconSize,
+          ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+                width: 2,
+                color:
+                    searchTerm.toLowerCase() == model.level.name.toLowerCase()
+                        ? _colorMap[model.level]!
+                        : Colors.transparent),
+          ),
         ),
         super(key: key);
 
@@ -320,28 +358,38 @@ class _LogWidget extends StatelessWidget {
                 child: icon,
                 padding: const EdgeInsets.only(right: 5),
               ),
-              Text(
+              GrepText(
                 "[${model.caller}]",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _textColorMap[model.callerColour]),
+                searchTerm: searchTerm,
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _textColorMap[model.callerColour],
+                ),
+                highlightStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  color: _textColorMap[model.callerColour],
+                ),
               ),
               Expanded(child: Container()),
               IconButton(
                 onPressed: () {
-
                   String message = "[${model.caller}] ${model.message}";
                   if (model.error != null) {
-                    message = "$message : ${model.error!.stackTrace.toString()}";
+                    message =
+                        "$message : ${model.error!.stackTrace.toString()}";
                   }
 
-                  Clipboard.setData(ClipboardData(text:message));
+                  Clipboard.setData(ClipboardData(text: message));
                 },
                 icon: const Icon(Icons.copy),
               ),
             ],
           ),
-          Text(model.message),
+          GrepText(
+            model.message,
+            searchTerm: searchTerm,
+          ),
         ],
       ),
     );
