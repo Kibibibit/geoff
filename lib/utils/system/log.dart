@@ -216,7 +216,7 @@ class _LogConsole extends StatefulWidget {
 
 class _LogConsoleState extends State<_LogConsole> {
   late StreamSubscription subscription;
-
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
   String searchTerm = "";
 
@@ -224,6 +224,7 @@ class _LogConsoleState extends State<_LogConsole> {
   void initState() {
     super.initState();
     search("");
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
         setState(() {});
@@ -275,17 +276,17 @@ class _LogConsoleState extends State<_LogConsole> {
               onChanged: (searchTerm) => search(searchTerm),
               autocorrect: false,
               enableSuggestions: false,
-              
               decoration: InputDecoration(
-                label: const Text("Search"),
-                suffix: IconButton(onPressed: () => search(""), icon: const Icon(Icons.close))
-              ),
-              
+                  label: const Text("Search"),
+                  suffix: IconButton(
+                      onPressed: () => search(""),
+                      icon: const Icon(Icons.close))),
             ),
           ),
           const Divider(),
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: filteredLogs.length,
               itemBuilder: (context, index) {
                 return _LogWidget(

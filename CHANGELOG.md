@@ -8,6 +8,7 @@
 - Added `GrepText` to widgets
 - Increased default `maxLogs` in `Log` to 1000
 - Added `GrepText` based searching into the logger
+- Log Console should jump to the bottom on start up
 
 ### **0.2.3**
 - Readme updates
