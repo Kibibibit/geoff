@@ -19,7 +19,7 @@ class Log {
   static const String _white = "\x1B[37m";
   static const String _reset = "\x1B[0m";
 
-  static int _maxLogs = 100;
+  static int _maxLogs = 1000;
 
   static double _iconSize = 24.0;
 
