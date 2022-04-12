@@ -3,6 +3,7 @@
 ## **Version 0.2**
 ### **0.2.4**
 - Re-wrote `MayRest` to reduce code duplication
+- `MayRest` calls can now be manually given a token
 - Added `patch` to `MayRest`
 
 ### **0.2.3**
