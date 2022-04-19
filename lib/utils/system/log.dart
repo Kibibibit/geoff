@@ -315,10 +315,10 @@ class _LogConsoleState extends State<_LogConsole> {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: "Search",
+                      hintText: "Search",
                       suffix: IconButton(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
                           onPressed: () => search(""),
                           icon: const Icon(Icons.close))),
                 ),
@@ -396,6 +396,7 @@ class _LogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       subtitle: Text(
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
