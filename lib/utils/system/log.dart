@@ -339,8 +339,7 @@ class _LogConsoleState extends State<_LogConsole> {
                     }
                     return null;
                   })
-                  .toList()
-                  .where((element) => element != null).toList() as List<Widget>,
+                  .whereType<Widget>().toList()
             ),
           ),
           Expanded(
