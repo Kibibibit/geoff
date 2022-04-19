@@ -311,7 +311,7 @@ class _LogConsoleState extends State<_LogConsole> {
                 trailing: LayoutBuilder(
                   builder: ((context, constraints) => Padding(
                       padding: EdgeInsets.only(
-                        right: constraints.maxWidth * 0.5,
+                        top: constraints.maxWidth * 0.5,
                       ),
                       child: const Icon(Icons.filter_alt))),
                 ),
