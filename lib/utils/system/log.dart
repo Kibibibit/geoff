@@ -308,7 +308,7 @@ class _LogConsoleState extends State<_LogConsole> {
             elevation: 10.0,
             shadowColor: Colors.black,
             child: ExpansionTile(
-                trailing: const Center(child: Icon(Icons.filter_alt)),
+                trailing: Container(child: const Icon(Icons.filter_alt,), color:Colors.red),
                 title: TextField(
                   controller: _controller,
                   onChanged: (searchTerm) => search(searchTerm),
