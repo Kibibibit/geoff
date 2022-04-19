@@ -252,13 +252,12 @@ class _LogConsoleState extends State<_LogConsole> {
     setState(() {
       filters[level] = value ?? filters[level]!;
     });
+    createDialogWidgets();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    clearFilters();
+  void createDialogWidgets() {
     setState(() {
+      dialogWidgets = [];
       for (Level level in Level.values) {
         if (level != Level.nothing) {
           dialogWidgets.add(Row(
@@ -276,6 +275,13 @@ class _LogConsoleState extends State<_LogConsole> {
         }
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    clearFilters();
+    createDialogWidgets();
     search("");
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
