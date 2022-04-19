@@ -308,9 +308,8 @@ class _LogConsoleState extends State<_LogConsole> {
             elevation: 10.0,
             shadowColor: Colors.black,
             child: ExpansionTile(
-              trailing: const Icon(Icons.filter_alt),
-              title: Expanded(
-                child: TextField(
+                trailing: const Center(child: Icon(Icons.filter_alt)),
+                title: TextField(
                   controller: _controller,
                   onChanged: (searchTerm) => search(searchTerm),
                   autocorrect: false,
@@ -321,26 +320,33 @@ class _LogConsoleState extends State<_LogConsole> {
                           onPressed: () => search(""),
                           icon: const Icon(Icons.close))),
                 ),
-              ),
-              children: Level.values
-                  .map<Widget?>((Level level) {
-                    if (level != Level.nothing) {
-                      return CheckboxListTile(
-                        value: filters[level],
-                        onChanged: (value) => updateLevel(level, value),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(_iconMap[level], color: _colorMap[level],),
-                            Text(level.name.toUpperCase()),
-                          ],
-                        ),
-                      );
-                    }
-                    return null;
-                  })
-                  .whereType<Widget>().toList()
-            ),
+                children: Level.values
+                    .map<Widget?>((Level level) {
+                      if (level != Level.nothing) {
+                        return CheckboxListTile(
+                          value: filters[level],
+                          onChanged: (value) => updateLevel(level, value),
+                          title: Row(
+                            children: [
+                              Icon(
+                                _iconMap[level],
+                                color: _colorMap[level],
+                              ),
+                              Text(
+                                level.name.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: _colorMap[level],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return null;
+                    })
+                    .whereType<Widget>()
+                    .toList()),
           ),
           Expanded(
             child: ListView.builder(
