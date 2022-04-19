@@ -88,7 +88,7 @@ class Log {
     Level level = Level.info,
     bool colors = true,
   })  : _name = name,
-        _col = RandomUtils.intInRange(0, _classColors.length),
+        _col = RandomUtils.intInRange(0, _classColors.length-1),
         _colors = colors,
         _level = level;
 
@@ -326,6 +326,7 @@ class _LogConsoleState extends State<_LogConsole> {
                     .map<Widget?>((Level level) {
                       if (level != Level.nothing) {
                         return CheckboxListTile(
+                          dense: true,
                           value: filters[level],
                           onChanged: (value) => updateLevel(level, value),
                           title: Row(
