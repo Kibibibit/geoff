@@ -285,7 +285,6 @@ class _LogConsoleState extends State<_LogConsole> {
               ),
             ),
           ),
-          const Divider(),
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
