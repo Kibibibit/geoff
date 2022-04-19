@@ -328,13 +328,19 @@ class _LogConsoleState extends State<_LogConsole> {
                       return CheckboxListTile(
                         value: filters[level],
                         onChanged: (value) => updateLevel(level, value),
-                        title: Text(level.name.toUpperCase()),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(_iconMap[level], color: _colorMap[level],),
+                            Text(level.name.toUpperCase()),
+                          ],
+                        ),
                       );
                     }
                     return null;
                   })
                   .toList()
-                  .where((element) => element != null) as List<Widget>,
+                  .where((element) => element != null).toList() as List<Widget>,
             ),
           ),
           Expanded(
