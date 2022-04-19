@@ -7,7 +7,7 @@
 - Added `patch` to `MayRest`
 - Added `GrepText` to widgets
 - Increased default `maxLogs` in `Log` to 1000
-- Added `GrepText` based searching into the logger - Currently pretty rubbish, will improve it on next version
+- Added `GrepText` based searching into the logger
 
 ### **0.2.3**
 - Readme updates

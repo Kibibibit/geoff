@@ -5,6 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geoff/geoff.dart';
 
+final Map<Level, IconData> _iconMap = {
+  Level.info: Icons.lightbulb,
+  Level.warning: Icons.warning,
+  Level.error: Icons.error,
+  Level.debug: Icons.bug_report,
+  Level.wtf: Icons.ac_unit
+};
+final Map<Level, Color> _colorMap = {
+  Level.info: Colors.blue,
+  Level.warning: Colors.orange,
+  Level.error: Colors.red,
+  Level.debug: Colors.green,
+  Level.wtf: Colors.purple
+};
+
 /// An extension of the dart logger, but includes class names
 class Log {
   /// Escape codes for logging in color
@@ -28,8 +43,6 @@ class Log {
 
   static final StreamController _streamController =
       StreamController.broadcast();
-
-  static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
@@ -73,7 +86,7 @@ class Log {
     Level level = Level.info,
     bool colors = true,
   })  : _name = name,
-        _col = RandomUtils.intInRange(0, _classColors.length),
+        _col = RandomUtils.intInRange(0, _classColors.length - 1),
         _colors = colors,
         _level = level;
 
@@ -124,7 +137,7 @@ class Log {
   void logAt(Level level, dynamic message,
       [Error? error, StackTrace? stackTrace]) {
     if (level != Level.nothing && (SystemInfo.debugMode || _logInDebugMode)) {
-      String formattedMessage = _encoder.convert(message.toString());
+      String formattedMessage = message.toString();
       String levelString =
           "[${_colorise(level.name.toUpperCase(), _logColor[level]!)}]";
       String classString = "[${_colorise(_name, _classColors[_col])}]";
@@ -220,9 +233,37 @@ class _LogConsoleState extends State<_LogConsole> {
   final TextEditingController _controller = TextEditingController();
   String searchTerm = "";
 
+  Map<Level, bool> filters = {};
+  List<Widget> dialogWidgets = [];
+
+  void clearFilters([bool value = true]) {
+    setState(() {
+      for (Level level in Level.values) {
+        if (level != Level.nothing) {
+          filters[level] = value;
+        }
+      }
+    });
+  }
+
+  void updateLevel(Level level, bool? value) {
+    setState(() {
+      filters[level] = value ?? filters[level]!;
+    });
+  }
+
+  bool filtersAll() {
+    for (bool f in filters.values) {
+      if (!f) return false;
+    }
+    return true;
+  }
+
+
   @override
   void initState() {
     super.initState();
+    clearFilters();
     search("");
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
@@ -250,10 +291,10 @@ class _LogConsoleState extends State<_LogConsole> {
   Widget build(BuildContext context) {
     List<_LogModel> filteredLogs = Log._logs
         .where((_LogModel model) =>
-            (model.caller.contains(searchTerm) ||
-                model.message.contains(searchTerm) ||
-                model.level.name.toLowerCase() == searchTerm.toLowerCase()) ||
-            searchTerm == "")
+            ((model.caller.contains(searchTerm) ||
+                    model.message.contains(searchTerm)) ||
+                searchTerm == "") &&
+            filters[model.level]!)
         .toList();
 
     return Scaffold(
@@ -269,21 +310,77 @@ class _LogConsoleState extends State<_LogConsole> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextField(
-              controller: _controller,
-              onChanged: (searchTerm) => search(searchTerm),
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: InputDecoration(
-                  label: const Text("Search"),
-                  suffix: IconButton(
-                      onPressed: () => search(""),
-                      icon: const Icon(Icons.close))),
-            ),
+          Material(
+            elevation: 10.0,
+            shadowColor: Colors.black,
+            child: ExpansionTile(
+                trailing: const Icon(Icons.filter_alt),
+                title: TextField(
+                  controller: _controller,
+                  onChanged: (searchTerm) => search(searchTerm),
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                      hintText: "Search",
+                      suffix: IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () => search(""),
+                          icon: const Icon(Icons.close))),
+                ),
+                children: Level.values
+                    .map<Widget?>((Level level) {
+                      if (level != Level.nothing) {
+                        return CheckboxListTile(
+                          dense: true,
+                          value: filters[level],
+                          onChanged: (value) => updateLevel(level, value),
+                          title: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Icon(
+                                  _iconMap[level],
+                                  color: _colorMap[level],
+                                ),
+                              ),
+                              Text(
+                                level.name.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: _colorMap[level],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return CheckboxListTile(
+                        value: filtersAll(),
+                        dense: true,
+                        onChanged: (value) => clearFilters(value ?? false),
+                         title: Row(
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(
+                                  Icons.abc,
+                                ),
+                              ),
+                              Text(
+                                "ALL",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                                ),
+                              ),
+                            ],
+                          ),
+                      );
+                    })
+                    .whereType<Widget>()
+                    .toList()),
           ),
-          const Divider(),
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -303,22 +400,6 @@ class _LogConsoleState extends State<_LogConsole> {
 }
 
 class _LogWidget extends StatelessWidget {
-  static final Map<Level, IconData> _iconMap = {
-    Level.info: Icons.lightbulb,
-    Level.warning: Icons.warning,
-    Level.error: Icons.error,
-    Level.debug: Icons.bug_report,
-    Level.wtf: Icons.ac_unit
-  };
-
-  static final Map<Level, Color> _colorMap = {
-    Level.info: Colors.blue,
-    Level.warning: Colors.orange,
-    Level.error: Colors.red,
-    Level.debug: Colors.green,
-    Level.wtf: Colors.purple
-  };
-
   static final Map<String, Color> _textColorMap = {
     Log._green: Colors.green,
     Log._yellow: Colors.orange,
@@ -333,27 +414,17 @@ class _LogWidget extends StatelessWidget {
   final String searchTerm;
 
   _LogWidget({Key? key, required this.model, required this.searchTerm})
-      : icon = Container(
-          child: Icon(
-            _iconMap[model.level],
-            color: _colorMap[model.level],
-            size: Log._iconSize,
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-                width: 2,
-                color:
-                    searchTerm.toLowerCase() == model.level.name.toLowerCase()
-                        ? _colorMap[model.level]!
-                        : Colors.transparent),
-          ),
+      : icon = Icon(
+          _iconMap[model.level],
+          color: _colorMap[model.level],
+          size: Log._iconSize,
         ),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       subtitle: Text(
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
@@ -392,7 +463,7 @@ class _LogWidget extends StatelessWidget {
                     message =
                         "$message : ${model.error!.stackTrace.toString()}";
                   }
-
+      
                   Clipboard.setData(ClipboardData(text: message));
                 },
                 icon: const Icon(Icons.copy),
