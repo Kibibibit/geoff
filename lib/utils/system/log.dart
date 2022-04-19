@@ -330,9 +330,12 @@ class _LogConsoleState extends State<_LogConsole> {
                           onChanged: (value) => updateLevel(level, value),
                           title: Row(
                             children: [
-                              Icon(
-                                _iconMap[level],
-                                color: _colorMap[level],
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Icon(
+                                  _iconMap[level],
+                                  color: _colorMap[level],
+                                ),
                               ),
                               Text(
                                 level.name.toUpperCase(),
