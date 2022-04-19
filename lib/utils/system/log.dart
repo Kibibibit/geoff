@@ -315,11 +315,10 @@ class _LogConsoleState extends State<_LogConsole> {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: InputDecoration(
-                      isCollapsed: true,
-                      isDense: true,
                       border: const OutlineInputBorder(),
                       labelText: "Search",
                       suffix: IconButton(
+                          padding: const EdgeInsets.all(2.0),
                           onPressed: () => search(""),
                           icon: const Icon(Icons.close))),
                 ),
