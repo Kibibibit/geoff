@@ -1,6 +1,9 @@
 # **Changelog**
 
 ## **Version 0.2**
+### **0.2.5**
+
+
 ### **0.2.4**
 - Re-wrote `MayRest` to reduce code duplication
 - `MayRest` calls can now be manually given a token
