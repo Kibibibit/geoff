@@ -315,6 +315,7 @@ class _LogConsoleState extends State<_LogConsole> {
                   autocorrect: false,
                   enableSuggestions: false,
                   decoration: InputDecoration(
+                      isDense: true,
                       border: const OutlineInputBorder(),
                       labelText: "Search",
                       suffix: IconButton(
