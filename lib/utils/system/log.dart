@@ -240,7 +240,7 @@ class _LogConsoleState extends State<_LogConsole> {
     setState(() {
       for (Level level in Level.values) {
         if (level != Level.nothing) {
-          filters[level] = true;
+          filters[level] = value;
         }
       }
     });
