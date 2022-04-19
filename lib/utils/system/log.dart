@@ -360,18 +360,18 @@ class _LogConsoleState extends State<_LogConsole> {
                         dense: true,
                         onChanged: (value) => clearFilters(value ?? false),
                          title: Row(
-                            children: [
-                              const Padding(
+                            children: const [
+                              Padding(
                                 padding: EdgeInsets.only(right: 8.0),
                                 child: Icon(
                                   Icons.abc,
                                 ),
                               ),
                               Text(
-                                level.name.toUpperCase(),
+                                "ALL",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: _colorMap[level],
+                                  color: Colors.black
                                 ),
                               ),
                             ],
