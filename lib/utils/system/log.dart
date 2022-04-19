@@ -252,36 +252,12 @@ class _LogConsoleState extends State<_LogConsole> {
     setState(() {
       filters[level] = value ?? filters[level]!;
     });
-    createDialogWidgets();
-  }
-
-  void createDialogWidgets() {
-    setState(() {
-      dialogWidgets = [];
-      for (Level level in Level.values) {
-        if (level != Level.nothing) {
-          dialogWidgets.add(Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Checkbox(
-                  value: filters[level],
-                  onChanged: (value) => updateLevel(level, value)),
-              Icon(
-                _iconMap[level]!,
-                color: _colorMap[level],
-              )
-            ],
-          ));
-        }
-      }
-    });
   }
 
   @override
   void initState() {
     super.initState();
     clearFilters();
-    createDialogWidgets();
     search("");
     setState(() {
       subscription = Log._streamController.stream.listen((event) {
@@ -331,56 +307,34 @@ class _LogConsoleState extends State<_LogConsole> {
           Material(
             elevation: 10.0,
             shadowColor: Colors.black,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      onChanged: (searchTerm) => search(searchTerm),
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: InputDecoration(
-                          hintText: "Search",
-                          suffix: IconButton(
-                              onPressed: () => search(""),
-                              icon: const Icon(Icons.close))),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return SimpleDialog(
-                              title: const Text("Filters"),
-                              children: [
-                                Row(
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: dialogWidgets,
-                                    )
-                                  ],
-                                ),
-                                Center(
-                                  child: ElevatedButton(
-                                    child: const Text("Close"),
-                                    onPressed: () {
-                                      search(searchTerm);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                )
-                              ],
-                            );
-                          });
-                    },
-                    icon: const Icon(Icons.filter),
-                  ),
-                ],
+            child: ExpansionTile(
+              trailing: const Icon(Icons.filter_alt),
+              title: Expanded(
+                child: TextField(
+                  controller: _controller,
+                  onChanged: (searchTerm) => search(searchTerm),
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: InputDecoration(
+                      hintText: "Search",
+                      suffix: IconButton(
+                          onPressed: () => search(""),
+                          icon: const Icon(Icons.close))),
+                ),
               ),
+              children: Level.values
+                  .map<Widget?>((Level level) {
+                    if (level != Level.nothing) {
+                      return CheckboxListTile(
+                        value: filters[level],
+                        onChanged: (value) => updateLevel(level, value),
+                        title: Text(level.name.toUpperCase()),
+                      );
+                    }
+                    return null;
+                  })
+                  .toList()
+                  .where((element) => element != null) as List<Widget>,
             ),
           ),
           Expanded(
