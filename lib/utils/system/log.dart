@@ -236,8 +236,7 @@ class _LogConsoleState extends State<_LogConsole> {
   String searchTerm = "";
 
   Map<Level, bool> filters = {};
-
-  List<DropdownMenuItem<Level>> dropDownItems = [];
+  List<Widget> dialogWidgets = [];
 
   void clearFilters() {
     setState(() {
@@ -249,11 +248,10 @@ class _LogConsoleState extends State<_LogConsole> {
     });
   }
 
-  void updateLevel(Level level) {
+  void updateLevel(Level level, bool? value) {
     setState(() {
-      filters[level] = !filters[level]!;
+      filters[level] = value ?? filters[level]!;
     });
-    
   }
 
   @override
@@ -263,17 +261,18 @@ class _LogConsoleState extends State<_LogConsole> {
     setState(() {
       for (Level level in Level.values) {
         if (level != Level.nothing) {
-          dropDownItems.add(
-            DropdownMenuItem<Level>(
-              value: level,
-              child: Row(
-                children: [
-                  Icon(_iconMap[level], color: _colorMap[level],),
-                  Checkbox(value: filters[level], onChanged: (value) => updateLevel(level))
-                ],
+          dialogWidgets.add(Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Checkbox(
+                  value: filters[level],
+                  onChanged: (value) => updateLevel(level, value)),
+              Icon(
+                _iconMap[level]!,
+                color: _colorMap[level],
               )
-            ),
-          );
+            ],
+          ));
         }
       }
     });
@@ -305,8 +304,9 @@ class _LogConsoleState extends State<_LogConsole> {
     List<_LogModel> filteredLogs = Log._logs
         .where((_LogModel model) =>
             ((model.caller.contains(searchTerm) ||
-                model.message.contains(searchTerm)) ||
-            searchTerm == "") && filters[model.level]!)
+                    model.message.contains(searchTerm)) ||
+                searchTerm == "") &&
+            filters[model.level]!)
         .toList();
 
     return Scaffold(
@@ -340,12 +340,36 @@ class _LogConsoleState extends State<_LogConsole> {
                             onPressed: () => search(""),
                             icon: const Icon(Icons.close))),
                   ),
-                  DropdownButtonHideUnderline(
-                    child: DropdownButton<Level>(
-                      icon: const Icon(Icons.filter),
-                      items: dropDownItems,
-                      onChanged: (value) {search(searchTerm);},
-                    ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SimpleDialog(
+                              title: const Text("Filters"),
+                              children: [
+                                Row(
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: dialogWidgets,
+                                    )
+                                  ],
+                                ),
+                                Center(
+                                  child: ElevatedButton(
+                                    child: const Text("Close"),
+                                    onPressed: () {
+                                      search(searchTerm);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                    },
+                    icon: const Icon(Icons.filter),
                   ),
                 ],
               ),
