@@ -329,16 +329,18 @@ class _LogConsoleState extends State<_LogConsole> {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 children: [
-                  TextField(
-                    controller: _controller,
-                    onChanged: (searchTerm) => search(searchTerm),
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    decoration: InputDecoration(
-                        hintText: "Search",
-                        suffix: IconButton(
-                            onPressed: () => search(""),
-                            icon: const Icon(Icons.close))),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      onChanged: (searchTerm) => search(searchTerm),
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      decoration: InputDecoration(
+                          hintText: "Search",
+                          suffix: IconButton(
+                              onPressed: () => search(""),
+                              icon: const Icon(Icons.close))),
+                    ),
                   ),
                   IconButton(
                     onPressed: () {
