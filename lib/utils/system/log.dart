@@ -251,8 +251,7 @@ class _LogConsoleState extends State<_LogConsole> {
     List<_LogModel> filteredLogs = Log._logs
         .where((_LogModel model) =>
             (model.caller.contains(searchTerm) ||
-                model.message.contains(searchTerm) ||
-                model.level.name.toLowerCase() == searchTerm.toLowerCase()) ||
+                model.message.contains(searchTerm)) ||
             searchTerm == "")
         .toList();
 
@@ -269,18 +268,21 @@ class _LogConsoleState extends State<_LogConsole> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextField(
-              controller: _controller,
-              onChanged: (searchTerm) => search(searchTerm),
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: InputDecoration(
-                  label: const Text("Search"),
-                  suffix: IconButton(
-                      onPressed: () => search(""),
-                      icon: const Icon(Icons.close))),
+          Material(
+            elevation: 10.0,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: TextField(
+                controller: _controller,
+                onChanged: (searchTerm) => search(searchTerm),
+                autocorrect: false,
+                enableSuggestions: false,
+                decoration: InputDecoration(
+                    label: const Text("Search"),
+                    suffix: IconButton(
+                        onPressed: () => search(""),
+                        icon: const Icon(Icons.close))),
+              ),
             ),
           ),
           const Divider(),
@@ -333,21 +335,10 @@ class _LogWidget extends StatelessWidget {
   final String searchTerm;
 
   _LogWidget({Key? key, required this.model, required this.searchTerm})
-      : icon = Container(
-          child: Icon(
-            _iconMap[model.level],
-            color: _colorMap[model.level],
-            size: Log._iconSize,
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-                width: 2,
-                color:
-                    searchTerm.toLowerCase() == model.level.name.toLowerCase()
-                        ? _colorMap[model.level]!
-                        : Colors.transparent),
-          ),
+      : icon = Icon(
+          _iconMap[model.level],
+          color: _colorMap[model.level],
+          size: Log._iconSize,
         ),
         super(key: key);
 
