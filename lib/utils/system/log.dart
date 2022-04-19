@@ -44,8 +44,6 @@ class Log {
   static final StreamController _streamController =
       StreamController.broadcast();
 
-  static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
-
   static void _addLog(_LogModel model) {
     if (_logs.length >= _maxLogs) {
       _logs.removeAt(0);
@@ -88,7 +86,7 @@ class Log {
     Level level = Level.info,
     bool colors = true,
   })  : _name = name,
-        _col = RandomUtils.intInRange(0, _classColors.length-1),
+        _col = RandomUtils.intInRange(0, _classColors.length - 1),
         _colors = colors,
         _level = level;
 
@@ -139,7 +137,7 @@ class Log {
   void logAt(Level level, dynamic message,
       [Error? error, StackTrace? stackTrace]) {
     if (level != Level.nothing && (SystemInfo.debugMode || _logInDebugMode)) {
-      String formattedMessage = _encoder.convert(message.toString());
+      String formattedMessage = message.toString();
       String levelString =
           "[${_colorise(level.name.toUpperCase(), _logColor[level]!)}]";
       String classString = "[${_colorise(_name, _classColors[_col])}]";
@@ -238,7 +236,7 @@ class _LogConsoleState extends State<_LogConsole> {
   Map<Level, bool> filters = {};
   List<Widget> dialogWidgets = [];
 
-  void clearFilters() {
+  void clearFilters([bool value = true]) {
     setState(() {
       for (Level level in Level.values) {
         if (level != Level.nothing) {
@@ -253,6 +251,14 @@ class _LogConsoleState extends State<_LogConsole> {
       filters[level] = value ?? filters[level]!;
     });
   }
+
+  bool filtersAll() {
+    for (bool f in filters.values) {
+      if (!f) return false;
+    }
+    return true;
+  }
+
 
   @override
   void initState() {
@@ -349,7 +355,28 @@ class _LogConsoleState extends State<_LogConsole> {
                           ),
                         );
                       }
-                      return null;
+                      return CheckboxListTile(
+                        value: filtersAll(),
+                        dense: true,
+                        onChanged: (value) => clearFilters(value ?? false),
+                         title: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(
+                                  Icons.abc,
+                                ),
+                              ),
+                              Text(
+                                level.name.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: _colorMap[level],
+                                ),
+                              ),
+                            ],
+                          ),
+                      );
                     })
                     .whereType<Widget>()
                     .toList()),
