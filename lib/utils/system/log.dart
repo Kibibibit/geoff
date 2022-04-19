@@ -429,54 +429,52 @@ class _LogWidget extends StatelessWidget {
         model.error?.toString() ?? "",
         style: const TextStyle(color: Colors.red),
       ),
-      title: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  child: icon,
-                  padding: const EdgeInsets.only(right: 5),
+      title: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                child: icon,
+                padding: const EdgeInsets.only(right: 5),
+              ),
+              GrepText(
+                "[${model.caller}]",
+                searchTerm: searchTerm,
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _textColorMap[model.callerColour],
                 ),
-                GrepText(
-                  "[${model.caller}]",
-                  searchTerm: searchTerm,
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _textColorMap[model.callerColour],
-                  ),
-                  highlightStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    color: Colors.red,
-                  ),
+                highlightStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  color: Colors.red,
                 ),
-                Expanded(child: Container()),
-                IconButton(
-                  onPressed: () {
-                    String message = "[${model.caller}] ${model.message}";
-                    if (model.error != null) {
-                      message =
-                          "$message : ${model.error!.stackTrace.toString()}";
-                    }
+              ),
+              Expanded(child: Container()),
+              IconButton(
+                onPressed: () {
+                  String message = "[${model.caller}] ${model.message}";
+                  if (model.error != null) {
+                    message =
+                        "$message : ${model.error!.stackTrace.toString()}";
+                  }
       
-                    Clipboard.setData(ClipboardData(text: message));
-                  },
-                  icon: const Icon(Icons.copy),
-                ),
-              ],
-            ),
-            GrepText(
-              model.message,
-              searchTerm: searchTerm,
-            ),
-          ],
-        ),
+                  Clipboard.setData(ClipboardData(text: message));
+                },
+                icon: const Icon(Icons.copy),
+              ),
+            ],
+          ),
+          GrepText(
+            model.message,
+            searchTerm: searchTerm,
+          ),
+        ],
       ),
     );
   }
