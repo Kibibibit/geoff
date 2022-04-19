@@ -308,13 +308,7 @@ class _LogConsoleState extends State<_LogConsole> {
             elevation: 10.0,
             shadowColor: Colors.black,
             child: ExpansionTile(
-                trailing: LayoutBuilder(
-                  builder: ((context, constraints) => Padding(
-                      padding: EdgeInsets.only(
-                        top: constraints.maxWidth * 0.5,
-                      ),
-                      child: const Icon(Icons.filter_alt))),
-                ),
+                trailing: const Icon(Icons.filter_alt),
                 title: TextField(
                   controller: _controller,
                   onChanged: (searchTerm) => search(searchTerm),
@@ -322,7 +316,7 @@ class _LogConsoleState extends State<_LogConsole> {
                   enableSuggestions: false,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: "Search",
+                      labelText: "Search",
                       suffix: IconButton(
                           onPressed: () => search(""),
                           icon: const Icon(Icons.close))),
