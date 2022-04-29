@@ -2,7 +2,10 @@
 
 ## **Version 0.2**
 ### **0.2.5**
-
+Finally adding stuff to the `models` package this update!
+- Added `GeoffUser` and `KeycloakUser`
+- Added `ModelUtils`
+- Added `BadTypeException` and `MissingFieldException`
 
 ### **0.2.4**
 - Re-wrote `MayRest` to reduce code duplication

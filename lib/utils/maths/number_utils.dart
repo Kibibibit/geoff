@@ -1,5 +1,3 @@
-
-
 import 'dart:math';
 
 /// This class contains utility functions related to number manipulation,
@@ -36,7 +34,6 @@ class NumberUtils {
   static int wrapInt(int val, int min, int max) {
     return wrapDouble(val.toDouble(), min.toDouble(), max.toDouble()).toInt();
   }
-
 
 
 }
