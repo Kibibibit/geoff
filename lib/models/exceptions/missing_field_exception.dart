@@ -1,13 +1,18 @@
 class MissingFieldException implements Exception {
 
 
-  String fieldName;
-  bool emptyIsNull;
-  bool nullable;
+  final String fieldName;
+  final bool emptyIsNull;
+  final bool nullable;
+  final String message;
+  MissingFieldException(this.fieldName, this.emptyIsNull, this.nullable) : 
+  message = "$fieldName was missing${nullable ? ", and emptyIsNull is $emptyIsNull!" : "!"}";
 
-  MissingFieldException(this.fieldName, this.emptyIsNull, this.nullable);
+  @override
+  String toString() => message;
 
-  String error() => "$fieldName was missing${nullable ? ", and emptyIsNull is $emptyIsNull!" : "!"}";
+  
+
 
 
 } 

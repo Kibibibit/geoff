@@ -1,10 +1,13 @@
 class BadTypeException implements Exception {
 
-  String field;
-  Type expected;
-  Type got;
+  final String field;
+  final Type expected;
+  final Type got;
+  final String message;
 
-  BadTypeException(this.field, this.expected, this.got);
+  BadTypeException(this.field, this.expected, this.got) :
+  message = "Field '$field' expected ${expected.toString()} but got ${got.toString()}";
 
-  String error() => "Field '$field' expected ${expected.toString()} but got ${got.toString()}";
+  @override
+  String toString() => message;
 } 
