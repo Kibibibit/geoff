@@ -5,8 +5,10 @@ import 'package:geoff/geoff.dart';
 /// and stores a lot of parameters statically to help set up the project.
 /// Keep in mind this is designed specifically with keycloak in mind and
 /// has not been tested with other auth providers
-class AppAuthHelper {
+abstract class AppAuthHelper {
   static final Log _logger = Log("AppAuthHelper");
+
+  AppAuthHelper._();
 
   /// Disable the colors in the logs if your terminal does not support escape codes
   static void disableColors() {

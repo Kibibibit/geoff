@@ -2,8 +2,9 @@
 import 'package:geoff/models/exceptions/bad_type_exception.dart';
 import 'package:geoff/models/exceptions/missing_field_exception.dart';
 
-class ModelUtils {
+abstract class ModelUtils {
 
+  ModelUtils._();
 
   static K getField<K>(Map<String, dynamic> map, String fieldName, [bool emptyIsNull = true]) {
 

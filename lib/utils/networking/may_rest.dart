@@ -7,8 +7,11 @@ import 'package:http/http.dart' as http;
 
 /// Basic Rest Client
 /// Authors - Dan M
-class MayRest {
+abstract class MayRest {
   static final Log _logger = Log("MayRest");
+
+
+  MayRest._();
 
   /// Allows you to disable colors for this logger
   static void disableColors() {
