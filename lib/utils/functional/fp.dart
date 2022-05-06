@@ -12,7 +12,7 @@ abstract class FP {
 
       acc = fn(acc, list.first);
 
-      return reduce<K, V>(fn, acc)(list.sublist(1));
+      return reduce<K, V>(fn, acc)(list.skip(1) as List<V>);
     };
   }
 
@@ -29,7 +29,7 @@ abstract class FP {
         l.add(list.first);
       }
 
-      return _filter(fn, l)(list.sublist(1));
+      return _filter(fn, l)(list.skip(1) as List<K>);
     };
   }
 
@@ -45,7 +45,7 @@ abstract class FP {
 
       l.add(fn(list.first));
 
-      return _map<K, V>(fn, l)(list.sublist(1));
+      return _map<K, V>(fn, l)(list.skip(1) as List<K>);
     };
   }
 
