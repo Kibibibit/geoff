@@ -7,6 +7,8 @@ abstract class ModelUtils {
   ModelUtils._();
 
   /// Gets a field out of a `Map` of the given type.
+  /// Throws a `BadTypeException` if the type cannot be cast.
+  /// Throws a `MissingFieldException` if the field does not exist and `K` is not nullable
   static K getField<K>(Map<String, dynamic> map, String fieldName, [bool emptyIsNull = true]) {
 
     if (map.containsKey(fieldName)) {
@@ -24,7 +26,6 @@ abstract class ModelUtils {
     }
 
   }
-
 
 
 }
