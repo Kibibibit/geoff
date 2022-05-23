@@ -1,5 +1,5 @@
+///Returned when `ModelUtils` tries to get a field that does not exist
 class MissingFieldException implements Exception {
-
 
   final String fieldName;
   final bool emptyIsNull;

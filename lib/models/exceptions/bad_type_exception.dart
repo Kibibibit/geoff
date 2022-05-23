@@ -1,3 +1,4 @@
+///Thrown when `ModelUtils` tries to get a field and the type is not matched
 class BadTypeException implements Exception {
 
   final String field;
