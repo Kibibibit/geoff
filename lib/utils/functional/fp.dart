@@ -12,9 +12,11 @@ abstract class FP {
     };
   }
 
-  static K Function(List<V> list) reduce<K, V>(
-      K Function(K acc, V elem) fn, K acc) {
-    return (final List<V> list) {
+  /// Reduces `acc` by calling `fn` on every element of `list`. `fn` should modify `acc` and then return it.
+  /// Call like `FP.reduce<K,V>(fn, acc)(list)`
+  static V Function(List<K> list) reduce<K, V>(
+      V Function(V acc, K elem) fn, V acc) {
+    return (final List<K> list) {
       if (list.isEmpty) {
         return acc;
       }
@@ -42,6 +44,8 @@ abstract class FP {
     };
   }
 
+  /// Returns a new list in which `fn(every element on list)` returns `true`
+  /// Call like `FP.filter<K>(fn)(list)`
   static List<K> Function(List<K> list) filter<K>(bool Function(K elem) fn) =>
       (final List<K> list) => _filter<K>(fn, [])(list);
 
@@ -66,6 +70,9 @@ abstract class FP {
     };
   }
 
+  ///Returns a new list where each element of `list` is transformed by `fn`. If `V` is nullable,
+  /// and `fn` returns null, null will be added to the list. Otherwise, use `return null` to skip these elements.
+  /// Call like `FP.map<K,V>(fn)(list)`
   static List<V> Function(List<K> list) map<K, V>(V Function(K elem) fn) =>
       (final List<K> list) => _map<K, V>(fn, [])(list);
 }
