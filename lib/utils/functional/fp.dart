@@ -3,6 +3,7 @@ abstract class FP {
   /// Private constructor to prevent extending
   FP._();
 
+
   static K Function(List<V> list) reduce<K, V>(
       K Function(K acc, V elem) fn, K acc) {
     return (final List<V> list) {
@@ -12,7 +13,7 @@ abstract class FP {
 
       acc = fn(acc, list.first);
 
-      return reduce<K, V>(fn, acc)(list.skip(1) as List<V>);
+      return reduce<K, V>(fn, acc)(list.skip(1).toList());
     };
   }
 
@@ -29,7 +30,7 @@ abstract class FP {
         l.add(list.first);
       }
 
-      return _filter(fn, l)(list.skip(1) as List<K>);
+      return _filter(fn, l)(list.skip(1).toList());
     };
   }
 
@@ -43,9 +44,17 @@ abstract class FP {
         return l;
       }
 
-      l.add(fn(list.first));
+      V? v = fn(list.first);
+      if (v != null) {
+        l.add(fn(list.first));
+      } else if (null is V) {
+        // ignore: unnecessary_cast
+        (l as List<V?>).add(v);
+      }
 
-      return _map<K, V>(fn, l)(list.skip(1) as List<K>);
+      
+
+      return _map<K, V>(fn, l)(list.skip(1).toList());
     };
   }
 
