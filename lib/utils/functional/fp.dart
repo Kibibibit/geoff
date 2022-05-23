@@ -4,6 +4,14 @@ abstract class FP {
   FP._();
 
 
+  ///Runs `fn` on every element of `list`. Call like `FP.onEvery<K>(fn)(list)`
+  static void Function(List<K> list) onEvery<K>(void Function(K elem) fn){
+    return (final List<K> list) {
+      fn(list.first);
+      onEvery(fn)(list.skip(1).toList());
+    };
+  }
+
   static K Function(List<V> list) reduce<K, V>(
       K Function(K acc, V elem) fn, K acc) {
     return (final List<V> list) {
@@ -38,7 +46,7 @@ abstract class FP {
       (final List<K> list) => _filter<K>(fn, [])(list);
 
   static List<V> Function(List<K> list) _map<K, V>(
-      V Function(K elem) fn, List<V> l) {
+      V? Function(K elem) fn, List<V> l) {
     return (final List<K> list) {
       if (list.isEmpty) {
         return l;
@@ -46,7 +54,7 @@ abstract class FP {
 
       V? v = fn(list.first);
       if (v != null) {
-        l.add(fn(list.first));
+        l.add(v);
       } else if (null is V) {
         // ignore: unnecessary_cast
         (l as List<V?>).add(v);
