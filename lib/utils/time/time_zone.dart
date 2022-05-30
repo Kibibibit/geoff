@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:flutter/painting.dart';
-
 class Timezones {
   static List<Timezone> timezones = List.generate(tz.length, (index) => Timezone.fromJson(tz[index]));
 }
