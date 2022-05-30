@@ -13,7 +13,7 @@ abstract class NumberUtils {
     val *= pow(10, places);
 
     double out = val.roundToDouble();
-
+    
     return out/pow(10,places);
 
   }
