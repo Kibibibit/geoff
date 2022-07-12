@@ -1,6 +1,7 @@
 name: geoff
 description: A library of common code used in our projects
 version: 0.2.5
+repository: https://github.com/Kibibibit/geoff
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
