@@ -3,10 +3,15 @@ A library of common code used in our projects
 
 
 # **Installing**
-Currently, geoff is only available on git. To install, add this to your `pubspec.yaml` under `dependancies`:
+To install, add this to your `pubspec.yaml` under `dependancies`:
 ```yaml
 geoff:
     git: https://github.com/Kibibibit/geoff.git
+
+```
+**OR**
+```yaml
+geoff: ^0.2.5
 
 ```
 

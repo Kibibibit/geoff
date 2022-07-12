@@ -1,6 +1,9 @@
 # **Changelog**
 
 ## **Version 0.2**
+
+### Released on pub.dev!
+
 ### **0.2.5**
 - Changed a bunch of classes with only `static` methods to be `abstract` and added private constructors to prevent extending
 - Added the `functional` library, which contains a few funtional programming methods.
