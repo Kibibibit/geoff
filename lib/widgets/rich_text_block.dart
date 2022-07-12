@@ -72,7 +72,6 @@ class RichTextBlock {
         foreground: style?.foreground,
         shadows: style?.shadows,
         fontFeatures: style?.fontFeatures,
-        fontVariations: style?.fontVariations,
         decorationColor: style?.decorationColor,
         decorationStyle: style?.decorationStyle,
         decorationThickness: style?.decorationThickness,
