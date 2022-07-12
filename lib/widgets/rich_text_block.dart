@@ -11,7 +11,7 @@ class RichTextBlock {
   final String? _text;
 
   static final RegExp _regExp = RegExp(
-    r"<(?<tag>(.*))>(?<content>(.+))<\/\k<tag>>",
+    r"<(?<tag>(.*))>(?<content>(.*))<\/\k<tag>>",
     multiLine: true,
     dotAll: true,
   );
@@ -69,7 +69,7 @@ class RichTextBlock {
       for (String item in split) {
         if (matches.map((e) => e.group(0)).toList().contains(item)) {
           RegExpMatch match = matches.firstWhere((e) => e.group(0) == item);
-          String tag = (match.namedGroup("tag") ?? "p").replaceAll(RegExp(r":[0-9]"), "");
+          String tag = (match.namedGroup("tag") ?? "p").replaceAll(RegExp(r":[0-9]*"), "");
           String content = match.namedGroup("content") ?? "";
           children.add(RichTextBlock._generate(content, tag));
         } else {
