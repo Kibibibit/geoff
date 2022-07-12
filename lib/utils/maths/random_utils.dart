@@ -46,3 +46,12 @@ abstract class RandomUtils {
 
 
 }
+
+extension RandomElement on List {
+  
+  ///Gets a random element from this list
+  T randomElement<T>([int? seed]) {
+    return this[Random(seed).nextInt(length)];
+  }
+
+}

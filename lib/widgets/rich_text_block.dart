@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../utils/string/split_with_delim.dart';
 
+/// This component takes a string in through [RichTextBlock.generate] and
+/// recursively creates a tree of [RichTextBlock]s. This can then
+/// be converted into [TextSpan]s with [toTextSpans]
 class RichTextBlock {
-  List<RichTextBlock>? children;
-  String? tag;
-  String? text;
+  final List<RichTextBlock>? _children;
+  final String? _tag;
+  final String? _text;
 
   static final RegExp _regExp = RegExp(
     r"<(?<tag>(.*))>(?<content>(.+))<\/\k<tag>>",
@@ -13,6 +16,7 @@ class RichTextBlock {
     dotAll: true,
   );
 
+  /// Generates the tree of [RichTextBlock]s from [inText]
   static RichTextBlock generate(String inText) {
     RegExp open = RegExp(r"<(?<tag>([a-z]*))>");
     RegExp close = RegExp(r"<\/(?<tag>([a-z]*))>");
@@ -57,7 +61,7 @@ class RichTextBlock {
     List<RegExpMatch> matches = _regExp.allMatches(inText).toList();
 
     if (matches.isEmpty) {
-      return RichTextBlock._(text: inText, tag: tag);
+      return RichTextBlock._(null, tag, inText);
     } else {
       List<RichTextBlock> children = [];
 
@@ -73,26 +77,26 @@ class RichTextBlock {
         }
       }
 
-      return RichTextBlock._(children: children, tag: tag);
+      return RichTextBlock._(children, tag, null);
     }
   }
 
 
-  RichTextBlock._({this.children, this.tag, this.text});
+  RichTextBlock._(this._children, this._tag, this._text);
 
   static TextStyle _getTextStyle(RichTextBlock block, TextStyle? style) {
     FontWeight? fontWeight;
     FontStyle? fontStyle;
     TextDecoration? textDecoration;
 
-    if (block.tag != null) {
-      if (block.tag == "b") {
+    if (block._tag != null) {
+      if (block._tag == "b") {
         fontWeight = FontWeight.bold;
       }
-      if (block.tag == "i") {
+      if (block._tag == "i") {
         fontStyle = FontStyle.italic;
       }
-      if (block.tag == "u") {
+      if (block._tag == "u") {
         textDecoration = TextDecoration.underline;
       }
     }
@@ -123,27 +127,31 @@ class RichTextBlock {
       );
   }
 
-  TextSpan toTextSpans([TextStyle? style, String? parentTag, int? childNum]) {
+  /// Returns a text span based on this rich text
+  TextSpan toTextSpans([TextStyle? style = const TextStyle(color: Colors.black)]) {
+    return _toTextSpans(style);
+  }
+
+  TextSpan _toTextSpans([TextStyle? style, String? parentTag, int? childNum]) {
     TextStyle s = _getTextStyle(this, style);
-    if (children != null) {
+    if (_children != null) {
       int i = 0;
       return TextSpan(
-        children: children!.map((e) {
-          if (tag == "ol" && e.tag == "li") {
+        children: _children!.map((e) {
+          if (_tag == "ol" && e._tag == "li") {
             i++;
           }
-          TextSpan span = e.toTextSpans(_getTextStyle(e, s), tag, i);
+          TextSpan span = e._toTextSpans(_getTextStyle(e, s), _tag, i);
           return span;
         }).toList(),
         style: s,
       );
     } else {
-      String t = text ?? "";
-      if (tag == "p" || tag == "li") {
+      String t = _text ?? "";
+      if (_tag == "p" || _tag == "li") {
         t = t + "\n";
-        if (tag == "li") {
+        if (_tag == "li") {
           if (parentTag == "ol") {
-            print("$childNum. $t");
             t = "$childNum. $t";
           } else if (parentTag == "ul") {
             t = "• $t";
@@ -154,11 +162,12 @@ class RichTextBlock {
     }
   }
 
+  /// Returns a string of what would be rendered by this block
   String getRenderedString() {
-    if (children != null) {
-      return children!.map((e) => e.getRenderedString()).join();
+    if (_children != null) {
+      return _children!.map((e) => e.getRenderedString()).join();
     } else {
-      return text ?? "";
+      return _text ?? "";
     }
   }
 }
