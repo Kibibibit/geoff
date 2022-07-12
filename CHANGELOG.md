@@ -10,6 +10,7 @@ Finally adding stuff to the `models` package this update!
 - Added `GeoffUser` and `KeycloakUser`
 - Added `ModelUtils`
 - Added `BadTypeException` and `MissingFieldException`
+- Added the `RichTextBlock` model, which can be used to output rich text with html tags! Currently no editor for it, maybe down the line I'll do that
 
 ### **0.2.4**
 - Re-wrote `MayRest` to reduce code duplication
