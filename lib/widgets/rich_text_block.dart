@@ -8,12 +8,52 @@ class RichTextBlock {
   String? text;
 
   static final RegExp _regExp = RegExp(
-    r"<(?<tag>([a-z]*))>(?<content>(.*))<\/\k<tag>>",
+    r"<(?<tag>(.*))>(?<content>(.+))<\/\k<tag>>",
     multiLine: true,
     dotAll: true,
   );
 
-  static RichTextBlock generate(String inText, [String? tag]) {
+  static RichTextBlock generate(String inText) {
+    RegExp open = RegExp(r"<(?<tag>([a-z]*))>");
+    RegExp close = RegExp(r"<\/(?<tag>([a-z]*))>");
+
+    Map<String, int> count = {};
+    Map<String, int> closeCount = {};
+    Set<String> closed = {};
+
+    String text = inText;
+
+    for (int i = 0; i < inText.length; i++) {
+      String s = inText.substring(i);
+      if (s.startsWith(open)) {
+        RegExpMatch m = open.firstMatch(s)!;
+        String t = m.namedGroup("tag")!;
+        if (!count.containsKey(t)) {
+          count[t] = 0;
+          closeCount[t] = 0;
+        }
+        count[t] = count[t]! + 1;
+        closeCount[t] = count[t]!;
+        text = text.replaceFirst(open, "<$t:${count[t]}>",i);
+      }
+      if (s.startsWith(close)) {
+        RegExpMatch m = close.firstMatch(s)!;
+        String t = m.namedGroup("tag")!;
+        if (closeCount.containsKey(t)) {
+
+          while(closed.contains("$t:${closeCount[t]}")) {
+            closeCount[t] = closeCount[t]! - 1;
+          }
+          text = text.replaceFirst(close, "</$t:${closeCount[t]}>",i);
+          closed.add("$t:${closeCount[t]}");
+        }
+      }
+    }
+
+    return RichTextBlock._generate(text);
+  }
+
+  static RichTextBlock _generate(String inText, [String? tag]) {
     List<RegExpMatch> matches = _regExp.allMatches(inText).toList();
 
     if (matches.isEmpty) {
@@ -25,17 +65,18 @@ class RichTextBlock {
       for (String item in split) {
         if (matches.map((e) => e.group(0)).toList().contains(item)) {
           RegExpMatch match = matches.firstWhere((e) => e.group(0) == item);
-          String tag = match.namedGroup("tag") ?? "p";
+          String tag = (match.namedGroup("tag") ?? "p").replaceAll(RegExp(r":[0-9]"), "");
           String content = match.namedGroup("content") ?? "";
-          children.add(RichTextBlock.generate(content, tag));
+          children.add(RichTextBlock._generate(content, tag));
         } else {
-          children.add(RichTextBlock.generate(item, tag));
+          children.add(RichTextBlock._generate(item, tag));
         }
       }
 
       return RichTextBlock._(children: children, tag: tag);
     }
   }
+
 
   RichTextBlock._({this.children, this.tag, this.text});
 
@@ -85,7 +126,7 @@ class RichTextBlock {
   TextSpan toTextSpans([TextStyle? style, String? parentTag, int? childNum]) {
     TextStyle s = _getTextStyle(this, style);
     if (children != null) {
-      int i = 1;
+      int i = 0;
       return TextSpan(
         children: children!.map((e) {
           TextSpan span = e.toTextSpans(_getTextStyle(e, s), tag, i++);
