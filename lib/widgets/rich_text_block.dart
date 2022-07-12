@@ -50,8 +50,6 @@ class RichTextBlock {
       }
     }
 
-    print(text);
-
     return RichTextBlock._generate(text);
   }
 
