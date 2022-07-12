@@ -50,6 +50,8 @@ class RichTextBlock {
       }
     }
 
+    print(text);
+
     return RichTextBlock._generate(text);
   }
 
@@ -129,7 +131,10 @@ class RichTextBlock {
       int i = 0;
       return TextSpan(
         children: children!.map((e) {
-          TextSpan span = e.toTextSpans(_getTextStyle(e, s), tag, i++);
+          if (tag == "ol" && e.tag == "li") {
+            i++;
+          }
+          TextSpan span = e.toTextSpans(_getTextStyle(e, s), tag, i);
           return span;
         }).toList(),
         style: s,
@@ -140,6 +145,7 @@ class RichTextBlock {
         t = t + "\n";
         if (tag == "li") {
           if (parentTag == "ol") {
+            print("$childNum. $t");
             t = "$childNum. $t";
           } else if (parentTag == "ul") {
             t = "• $t";
