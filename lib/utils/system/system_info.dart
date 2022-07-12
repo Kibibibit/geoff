@@ -1,7 +1,10 @@
 import 'dart:io' as io;
 import 'package:flutter/foundation.dart' as found;
 
-class SystemInfo {
+abstract class SystemInfo {
+
+  SystemInfo._();
+
   /// If true, the application is running in debug mode
   static bool get debugMode => found.kDebugMode;
 

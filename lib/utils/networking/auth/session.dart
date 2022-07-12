@@ -5,8 +5,10 @@ import 'package:geoff/geoff.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 /// Stores session data for the project, related to authentication and such.
-class Session {
+abstract class Session {
   static final Log _logger = Log("Session");
+
+  Session._();
 
   /// Disable the colors in the logs if your terminal does not support escape codes
   static void disableColors() {

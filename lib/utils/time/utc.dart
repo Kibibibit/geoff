@@ -1,3 +1,4 @@
+/// Stores the definition of a UTC timezone
 class _UtcDef {
   final String value;
   final String abbr;
@@ -11,6 +12,26 @@ class _UtcDef {
 }
 
 class Utc {
+
+  static List<_UtcDef> find({String? value, String? abbr, String? text, String? hasUtc, double? offset, bool? istDst}) {
+    List<_UtcDef> out = [];
+    for (_UtcDef def in timezones) {
+
+      if (
+        (value == null || def.value == value) &&
+        (abbr == null || def.abbr == abbr) &&
+        (text == null || def.text == text) &&
+        (hasUtc == null || def.utc.contains(hasUtc)) &&
+        (offset == null || def.offset == offset) &&
+        (istDst == null || def.isDst == istDst)
+      ) {
+        out.add(def);
+      }
+    }
+
+    return out;
+  }
+
   static const List<_UtcDef> timezones = [
     _UtcDef(
         "Dateline Standard Time",

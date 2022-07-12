@@ -2,8 +2,10 @@ import 'package:grpc/grpc.dart';
 
 
 /// Utils related to grpc communication
-class GrpcUtils {
+abstract class GrpcUtils {
 
+  ///Private constructor to prevent extending
+  GrpcUtils._();
 
   /// Returns a [ClientChannel] for grpc communication
   static ClientChannel getChannel(

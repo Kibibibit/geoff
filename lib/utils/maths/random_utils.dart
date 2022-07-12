@@ -5,7 +5,10 @@ import 'dart:math';
 /// This class contains functions related to getting random numbers.
 /// You can set the see with [setSeed] but keep in mind this will reset [Random] instance
 /// when called
-class RandomUtils {
+abstract class RandomUtils {
+
+  /// Private constructor to prevent extending
+  RandomUtils._();
 
   static Random? _random;
 
@@ -41,5 +44,14 @@ class RandomUtils {
     return min + _getRandom().nextDouble() * (max-min).abs();
   }
 
+
+}
+
+extension RandomElement on List {
+  
+  ///Gets a random element from this list
+  T randomElement<T>([int? seed]) {
+    return this[Random(seed).nextInt(length)];
+  }
 
 }
