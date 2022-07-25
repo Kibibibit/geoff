@@ -2,6 +2,9 @@
 
 ## **Version 0.2**
 
+### **0.2.6**
+- Added the `Debouncer` class
+
 ### Released on pub.dev!
 
 ### **0.2.5**
