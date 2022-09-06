@@ -2,6 +2,9 @@
 
 ## **Version 0.2**
 
+### **0.2.7**
+- Updated `flutter_appauth` to the latest version (`4.2.0`)
+
 ### **0.2.6**
 - Added the `Debouncer` class
 

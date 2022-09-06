@@ -1,6 +1,6 @@
 name: geoff
 description: A library of common code used in our projects
-version: 0.2.6
+version: 0.2.7
 repository: https://github.com/Kibibibit/geoff
 documentation: https://github.com/Kibibibit/geoff/wiki
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_appauth: ^2.4.1
+  flutter_appauth: ^4.2.0
   grpc: ^3.0.2
   http: ^0.13.4
   jaguar_jwt: ^3.0.0

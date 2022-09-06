@@ -15,7 +15,7 @@ abstract class AppAuthHelper {
     _logger.setColors(false);
   }
 
-  static final FlutterAppAuth _appAuth = FlutterAppAuth();
+  static const FlutterAppAuth _appAuth = FlutterAppAuth();
 
   static String? _redirectUrl;
   static String? _clientId;
