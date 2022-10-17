@@ -2,6 +2,9 @@
 
 ## **Version 0.2**
 
+### **0.2.9**
+- Fixed a bug with `SystemInfo.getPlatform`
+
 ### **0.2.8**
 - Temporarily removed colors from mac and ios logging, as the mac terminal does not support ANSI escape codes
 - Updated `bodyText2` to `bodyMedium` in `GrepText` to reflect latest flutter updates
