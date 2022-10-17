@@ -11,7 +11,7 @@ geoff:
 ```
 **OR**
 ```yaml
-geoff: ^0.2.8
+geoff: ^0.2.9
 
 ```
 
