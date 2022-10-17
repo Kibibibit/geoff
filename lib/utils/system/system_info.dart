@@ -8,7 +8,7 @@ abstract class SystemInfo {
   /// If true, the application is running in debug mode
   static bool get debugMode => found.kDebugMode;
 
-  static late final Platform? _platform;
+  static Platform? _platform;
 
   /// Gets the current [Platform] that the system is running on
   static Platform getPlatform() {
