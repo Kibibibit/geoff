@@ -2,6 +2,10 @@
 
 ## **Version 0.2**
 
+### **0.2.8**
+- Temporarily removed colors from mac and ios logging, as the mac terminal does not support ANSI escape codes
+- Updated `bodyText2` to `bodyMedium` in `GrepText` to reflect latest flutter updates
+
 ### **0.2.7**
 - Updated `flutter_appauth` to the latest version (`4.2.0`)
 

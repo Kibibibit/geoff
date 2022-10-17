@@ -93,7 +93,14 @@ class Log {
 
   Level get level => _level;
 
-  bool get colors => _colors;
+  bool get colors => _getColors();
+
+  bool _getColors() {
+    if (SystemInfo.getPlatform() != Platform.ios && SystemInfo.getPlatform() != Platform.macOs) {
+      return _colors;
+    }
+    return false;
+  }
 
   int get maxLogs => _maxLogs;
 
@@ -126,7 +133,7 @@ class Log {
   }
 
   String _colorise(String text, String color) {
-    if (_colors) {
+    if (colors) {
       text = color + text + _reset;
     }
     return text;
