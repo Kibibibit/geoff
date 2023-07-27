@@ -365,8 +365,8 @@ class _LogConsoleState extends State<_LogConsole> {
                         value: filtersAll(),
                         dense: true,
                         onChanged: (value) => clearFilters(value ?? false),
-                         title: Row(
-                            children: const [
+                         title: const Row(
+                            children: [
                               Padding(
                                 padding: EdgeInsets.only(right: 8.0),
                                 child: Icon(

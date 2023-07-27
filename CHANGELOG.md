@@ -2,6 +2,8 @@
 
 ## **Version 0.2**
 
+### **0.2.10**
+- Updated `http` to version 1.0.0
 ### **0.2.9**
 - Fixed a bug with `SystemInfo.getPlatform`
 
